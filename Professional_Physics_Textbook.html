@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="utf-8">
+    <title>Unit 1: Professional Physics Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #334155; line-height: 1.8; }
+        .bengali-text { font-family: 'Noto Serif Bengali', serif; }
+        h1, h2, h3 { font-family: 'Lora', serif; color: #0f172a; }
+        .card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); padding: 50px; margin-bottom: 50px; }
+        
+        .eng { color: #1e293b; font-size: 1.05rem; margin-bottom: 0.5rem; }
+        .ban { color: #64748b; font-size: 1rem; border-left: 3px solid #cbd5e1; padding-left: 1rem; margin-bottom: 1.5rem; }
+        
+        /* Clean Professional Formula Design */
+        .formula-container { background: #f1f5f9; border-radius: 8px; border: 1px solid #e2e8f0; margin: 30px 0; overflow: hidden; }
+        .formula-header { background: #e2e8f0; padding: 12px 20px; font-family: 'Lora', serif; font-weight: 600; color: #334155; font-size: 1.1rem; border-bottom: 1px solid #cbd5e1; }
+        .formula-math { padding: 30px; font-size: 1.5rem; text-align: center; background: #ffffff; border-bottom: 1px solid #e2e8f0; color: #0f172a; overflow-x: auto; }
+        .formula-vars { padding: 20px; background: #f8fafc; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .var-item { background: #ffffff; padding: 12px 16px; border-radius: 6px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; }
+        .var-sym { font-weight: bold; color: #0284c7; font-size: 1.1rem; margin-bottom: 4px; }
+        .var-name { font-weight: 500; color: #334155; font-size: 0.95rem; }
+        .var-unit { color: #64748b; font-size: 0.85rem; font-family: monospace; margin-top: 4px; }
+        
+        /* Clean Canvas Visuals */
+        .visual-box { border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; padding: 20px; margin: 30px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .visual-title { font-family: 'Lora', serif; font-weight: 600; color: #0f172a; margin-bottom: 5px; font-size: 1.1rem; }
+        .visual-desc { color: #64748b; font-size: 0.95rem; margin-bottom: 15px; }
+        .canvas-wrapper { width: 100%; height: 300px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
+        canvas { display: block; width: 100%; height: 100%; }
+        .math-canvas-wrapper { width: 100%; height: 200px; background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 6px; margin: 15px 0; overflow: hidden; }
+        
+        /* Math Section */
+        .math-section { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 25px; margin: 30px 0; }
+        .math-header { font-family: 'Lora', serif; font-weight: 600; color: #166534; font-size: 1.2rem; margin-bottom: 15px; }
+        .math-ans { margin-top: 15px; background: #dcfce7; padding: 12px 16px; border-radius: 6px; color: #166534; font-weight: 600; }
+        
+        /* Questions */
+        .question-box { background: #f1f5f9; border-radius: 8px; padding: 25px; margin-top: 30px; }
+        .q-item { background: #ffffff; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 10px; color: #334155; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Physics: Solid State & Devices</h1>
+            <p class="text-lg text-slate-500">A Comprehensive Academic Guide to Unit 1</p>
+        </div>
+
+        <div class="card">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 pb-4 border-b border-slate-200">Topic 1: Free Electron Theory (Drude-Lorentz Model)</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Historical Context</h3>
+                <p class="eng">In 1900, Paul Drude proposed the free electron theory of metals, which was later refined by Hendrik Lorentz in 1905. They applied the Kinetic Theory of Gases to the electrons in a solid. This classical theory successfully explained Ohm's law and the high electrical and thermal conductivity of metals, though it later failed to explain specific heat and magnetic susceptibility (which required quantum mechanics).</p>
+                <p class="ban bengali-text">১৯০০ সালে বিজ্ঞানী পল ড্রুড (Paul Drude) ধাতুর ফ্রি ইলেকট্রন থিওরি প্রস্তাব করেন, যা পরবর্তীতে ১৯০৫ সালে হেন্ড্রিক লরেঞ্জ (Hendrik Lorentz) আরও উন্নত করেন। ড্রুড গ্যাসের গতিতত্ত্বকে (Kinetic Theory of Gases) কঠিন পদার্থের ইলেকট্রনের ওপর প্রয়োগ করেন। এই চিরায়ত তত্ত্বটি ওহমের সূত্র এবং পরিবাহিতা দারুণভাবে ব্যাখ্যা করতে পেরেছিল, যদিও পরে এটি আপেক্ষিক তাপ (specific heat) ব্যাখ্যা করতে ব্যর্থ হয়।</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Core Postulates</h3>
+                <div class="space-y-4">
+                    <div><p class='eng'>1. Electron Gas Concept: Valence electrons detach and roam freely throughout the crystal, forming an 'electron gas'.</p><p class='ban bengali-text'>১. ইলেকট্রন গ্যাস: ভ্যালেন্স ইলেকট্রনগুলো মুক্ত হয়ে পুরো ক্রিস্টালে অবাধে ঘুরে বেড়ায় এবং 'ইলেকট্রন গ্যাস' তৈরি করে।</p></div><div><p class='eng'>2. Fixed Ion Cores: The heavy positive ions remain fixed at their lattice positions.</p><p class='ban bengali-text'>২. স্থির আয়ন: ভারী ধনাত্মক আয়নগুলো তাদের ল্যাটিস পজিশনে স্থির থাকে।</p></div><div><p class='eng'>3. Elastic Collisions: Electrons move in straight lines until they collide with ions. Collisions are perfectly elastic.</p><p class='ban bengali-text'>৩. স্থিতিস্থাপক সংঘর্ষ: ইলেকট্রনগুলো সোজা পথে চলে এবং আয়নের সাথে ধাক্কা খায়। এই সংঘর্ষগুলো সম্পূর্ণ স্থিতিস্থাপক।</p></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Mathematical Derivation</h3>
+                <p class="eng bg-slate-50 p-4 rounded border border-slate-200 font-serif text-slate-600">Derivation: Force F = -eE. Acceleration a = -eE/m. Drift velocity v_d = a * τ = -eEτ/m. Current density J = -ne(v_d). Thus J = (ne²τ/m)E. From Ohm's law J = σE, we get Conductivity σ = ne²τ/m.</p>
+                <p class="ban bengali-text mt-3">প্রমাণ: বল F = -eE। ত্বরণ a = -eE/m। ড্রিফট বেগ v_d = a * τ = -eEτ/m। কারেন্ট ডেনসিটি J = -ne(v_d) = (ne²τ/m)E। ওহমের সূত্র অনুযায়ী পরিবাহিতা σ = ne²τ/m।</p>
+            </div>
+
+            <!-- Clean Formula Box -->
+            <div class="formula-container">
+                <div class="formula-header">Primary Equation</div>
+                <div class="formula-math">$$ \sigma = \frac{n e^2 \tau}{m} $$</div>
+                <div class="formula-vars">
+                    <div class='var-item'><span class='var-sym'>$$ \sigma $$</span><span class='var-name'>Conductivity</span><span class='var-unit'>S/m</span></div><div class='var-item'><span class='var-sym'>$$ n $$</span><span class='var-name'>Electron Density</span><span class='var-unit'>m^{-3}</span></div><div class='var-item'><span class='var-sym'>$$ \tau $$</span><span class='var-name'>Relaxation Time</span><span class='var-unit'>s</span></div>
+                </div>
+            </div>
+
+            <!-- Clean Visual -->
+            <div class="visual-box">
+                <div class="visual-title">Visual Observation: Free Electron Gas Simulation</div>
+                <div class="visual-desc">Electrons interact with the fixed lattice ions. Thermal motion is chaotic, resulting in zero net displacement without an external field.</div>
+                <div class="canvas-wrapper"><canvas id="vis_1"></canvas></div>
+            </div>
+
+            <!-- Math Section -->
+            <div class="math-section">
+                <div class="math-header">Practical Application</div>
+                <p class="eng text-green-900">A copper wire has n = 8.5 x 10^28 m^-3 and tau = 2.5 x 10^-14 s. Calculate conductivity sigma.</p>
+                <p class="ban bengali-text border-green-300 text-green-800">একটি তামার তারে n = 8.5 x 10^28 এবং tau = 2.5 x 10^-14 s। পরিবাহিতা কত?</p>
+                
+                <div class="math-canvas-wrapper"><canvas id="math_1"></canvas></div>
+                
+                <div class="math-ans">Result: 5.95 x 10^7 S/m</div>
+            </div>
+
+            <!-- Questions -->
+            <div class="question-box">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">Review Questions</h3>
+                <div class="space-y-2">
+                    <div class='q-item'>• 1. Who proposed the free electron theory? (Ans: Drude in 1900)</div><div class='q-item'>• 2. Derive electrical conductivity using free electron model.</div><div class='q-item'>• 3. What is relaxation time?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 pb-4 border-b border-slate-200">Topic 2: Comprehensive Analysis of Drift and Diffusion</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Historical Context</h3>
+                <p class="eng">In semiconductor physics, understanding the movement of charge carriers is paramount. Drift was understood via classical mechanics, while diffusion mechanisms were formalized through Fick's laws and later integrated into semiconductor equations by Shockley.</p>
+                <p class="ban bengali-text">সেমিকন্ডাক্টর ফিজিক্সে চার্জ ক্যারিয়ারের গতিবিধি বোঝা অত্যন্ত গুরুত্বপূর্ণ। ড্রিফট চিরায়ত বলবিদ্যা দিয়ে বোঝা গেলেও, ডিফিউশন ফিকের সূত্র (Fick's laws) দ্বারা প্রতিষ্ঠিত হয় এবং পরে শকলি (Shockley) এটি যুক্ত করেন।</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Core Postulates</h3>
+                <div class="space-y-4">
+                    <div><p class='eng'>1. Drift Current: Caused exclusively by an external Electric Field (E). Carriers reach a steady Drift Velocity (v_d).</p><p class='ban bengali-text'>১. ড্রিফট কারেন্ট: বাইরের বৈদ্যুতিক ক্ষেত্রের (E) কারণে তৈরি হয়। ক্যারিয়ারগুলো একটি স্থির বেগে (ড্রিফট বেগ) পৌঁছায়।</p></div><div><p class='eng'>2. Diffusion Current: Caused by a Concentration Gradient (dn/dx). Particles move from high to low concentration naturally.</p><p class='ban bengali-text'>২. ডিফিউশন কারেন্ট: ঘনত্বের পার্থক্যের (dn/dx) কারণে ঘটে। কণাগুলো প্রাকৃতিকভাবে উচ্চ থেকে নিম্ন ঘনত্বে যায়।</p></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Mathematical Derivation</h3>
+                <p class="eng bg-slate-50 p-4 rounded border border-slate-200 font-serif text-slate-600">Diffusion Current: Flux = -D (dn/dx), where D is the diffusion coefficient. Current density J is charge (-e) times flux. J_diff = e D (dn/dx). Total current J = J_drift + J_diff.</p>
+                <p class="ban bengali-text mt-3">প্রমাণ: ফ্লাক্স = -D (dn/dx)। কারেন্ট ডেনসিটি J হলো চার্জ (-e) এবং ফ্লাক্সের গুণফল। J_diff = e D (dn/dx)। মোট কারেন্ট J = J_drift + J_diff।</p>
+            </div>
+
+            <!-- Clean Formula Box -->
+            <div class="formula-container">
+                <div class="formula-header">Primary Equation</div>
+                <div class="formula-math">$$ J_{total} = n e \mu E + e D_n \frac{dn}{dx} $$</div>
+                <div class="formula-vars">
+                    <div class='var-item'><span class='var-sym'>$$ D_n $$</span><span class='var-name'>Diffusion Coefficient</span><span class='var-unit'>m^2/s</span></div><div class='var-item'><span class='var-sym'>$$ dn/dx $$</span><span class='var-name'>Concentration Gradient</span><span class='var-unit'>m^{-4}</span></div>
+                </div>
+            </div>
+
+            <!-- Clean Visual -->
+            <div class="visual-box">
+                <div class="visual-title">Visual Observation: Drift vs Diffusion Mechanics</div>
+                <div class="visual-desc">Left: Drift driven by an Electric field. Right: Diffusion spreading outwards due to a concentration gradient.</div>
+                <div class="canvas-wrapper"><canvas id="vis_2"></canvas></div>
+            </div>
+
+            <!-- Math Section -->
+            <div class="math-section">
+                <div class="math-header">Practical Application</div>
+                <p class="eng text-green-900">If mobility μ = 0.1 m^2/Vs and E = 50 V/m, calculate drift velocity v_d.</p>
+                <p class="ban bengali-text border-green-300 text-green-800">মবিলিটি μ = 0.1 এবং E = 50 হলে v_d কত?</p>
+                
+                <div class="math-canvas-wrapper"><canvas id="math_2"></canvas></div>
+                
+                <div class="math-ans">Result: v_d = 5 m/s</div>
+            </div>
+
+            <!-- Questions -->
+            <div class="question-box">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">Review Questions</h3>
+                <div class="space-y-2">
+                    <div class='q-item'>• 1. Distinguish between Drift and Diffusion current.</div><div class='q-item'>• 2. What is the cause of diffusion current?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 pb-4 border-b border-slate-200">Topic 3 & 4: Fermi Energy & Fermi-Dirac Distribution</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Historical Context</h3>
+                <p class="eng">Developed by Enrico Fermi and Paul Dirac in 1926, this statistical distribution applies to identical particles with half-integer spin (fermions) that obey the Pauli exclusion principle, such as electrons.</p>
+                <p class="ban bengali-text">১৯২৬ সালে এনরিকো ফার্মি এবং পল ডিরাক এটি তৈরি করেন। এটি পাউলির বর্জন নীতি মেনে চলা হাফ-ইন্টিজার স্পিনযুক্ত কণার (যেমন ইলেকট্রন) ক্ষেত্রে প্রযোজ্য।</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Core Postulates</h3>
+                <div class="space-y-4">
+                    <div><p class='eng'>1. Fermi Energy (E_F): The highest energy level occupied by an electron at 0 K.</p><p class='ban bengali-text'>১. ফার্মি এনার্জি (E_F): ০ কেলভিনে একটি ইলেকট্রন সর্বোচ্চ যে শক্তি স্তর দখল করে।</p></div><div><p class='eng'>2. Fermi-Dirac Function: f(E) gives the probability that an energy state E is occupied at temperature T.</p><p class='ban bengali-text'>২. ফার্মি-ডিরাক ফাংশন: f(E) তাপমাত্রা T-তে একটি শক্তি স্তর E-তে ইলেকট্রন থাকার সম্ভাবনা নির্ণয় করে।</p></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Mathematical Derivation</h3>
+                <p class="eng bg-slate-50 p-4 rounded border border-slate-200 font-serif text-slate-600">At absolute zero (T=0K), if E < E_F, f(E) = 1 (100% occupied). If E > E_F, f(E) = 0 (empty). At T > 0K, exactly at E = E_F, f(E_F) = 1 / (1 + e^0) = 1/2 = 50%.</p>
+                <p class="ban bengali-text mt-3">০ কেলভিনে (T=0K), যদি E < E_F হয়, f(E) = 1 (১০০% পূর্ণ)। যদি E > E_F হয়, f(E) = 0 (ফাঁকা)। T > 0K তাপমাত্রায়, ঠিক E = E_F বিন্দুতে f(E_F) = 1/2 বা ৫০%।</p>
+            </div>
+
+            <!-- Clean Formula Box -->
+            <div class="formula-container">
+                <div class="formula-header">Primary Equation</div>
+                <div class="formula-math">$$ f(E) = \frac{1}{1 + e^{(E - E_F)/kT}} $$</div>
+                <div class="formula-vars">
+                    <div class='var-item'><span class='var-sym'>$$ f(E) $$</span><span class='var-name'>Probability</span><span class='var-unit'>0 to 1</span></div><div class='var-item'><span class='var-sym'>$$ E_F $$</span><span class='var-name'>Fermi Energy</span><span class='var-unit'>eV</span></div>
+                </div>
+            </div>
+
+            <!-- Clean Visual -->
+            <div class="visual-box">
+                <div class="visual-title">Visual Observation: Fermi-Dirac Probability Curve</div>
+                <div class="visual-desc">The probability curve shifts as Temperature increases, transitioning from a rigid step function to a smooth curve passing through 0.5 at E_F.</div>
+                <div class="canvas-wrapper"><canvas id="vis_3"></canvas></div>
+            </div>
+
+            <!-- Math Section -->
+            <div class="math-section">
+                <div class="math-header">Practical Application</div>
+                <p class="eng text-green-900">Calculate probability f(E) for E = E_F + kT.</p>
+                <p class="ban bengali-text border-green-300 text-green-800">E = E_F + kT স্তরে ইলেকট্রন থাকার সম্ভাবনা f(E) কত?</p>
+                
+                <div class="math-canvas-wrapper"><canvas id="math_3"></canvas></div>
+                
+                <div class="math-ans">Result: f(E) = 1 / (1 + e^1) = 1 / 2.718 = 0.268 (26.8%)</div>
+            </div>
+
+            <!-- Questions -->
+            <div class="question-box">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">Review Questions</h3>
+                <div class="space-y-2">
+                    <div class='q-item'>• 1. Define Fermi Energy.</div><div class='q-item'>• 2. What is the probability of occupation at the Fermi level at room temperature?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 pb-4 border-b border-slate-200">Topic 5: Formation of Energy Bands</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Historical Context</h3>
+                <p class="eng">Bloch's theorem (1928) and the Kronig-Penney model (1931) laid the foundation for band theory. They showed how periodic potentials in a crystal lattice create allowed and forbidden energy zones.</p>
+                <p class="ban bengali-text">১৯২৮ সালে ব্লকের উপপাদ্য এবং ১৯৩১ সালে ক্রনিগ-পেনি মডেল ব্যান্ড থিওরির ভিত্তি স্থাপন করে। তারা দেখান কীভাবে ল্যাটিসের পর্যায়বৃত্ত বিভব অ্যালাউড এবং ফরবিডেন এনার্জি জোন তৈরি করে।</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Core Postulates</h3>
+                <div class="space-y-4">
+                    <div><p class='eng'>1. Splitting of Levels: As atoms get closer, Pauli's exclusion principle prevents electrons from having the same quantum state, splitting discrete lines into continuous bands.</p><p class='ban bengali-text'>১. লেভেল বিভাজন: পরমাণু কাছে এলে পাউলির বর্জন নীতির কারণে আলাদা রেখাগুলো ভেঙে চওড়া ব্যান্ডে পরিণত হয়।</p></div><div><p class='eng'>2. Forbidden Gap (E_g): A region where no allowed electron states exist.</p><p class='ban bengali-text'>২. ফরবিডেন গ্যাপ (E_g): এমন একটি জায়গা যেখানে কোনো ইলেকট্রন থাকতে পারে না।</p></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Mathematical Derivation</h3>
+                <p class="eng bg-slate-50 p-4 rounded border border-slate-200 font-serif text-slate-600">Qualitative only: N interacting atoms bring N identical energy levels. They split into N closely spaced levels, forming a band of width roughly proportional to the interaction strength.</p>
+                <p class="ban bengali-text mt-3">N সংখ্যক পরমাণু কাছাকাছি এলে তাদের N সংখ্যক অভিন্ন এনার্জি লেভেল ভেঙে কাছাকাছি অবস্থিত N টি লেভেলে পরিণত হয়, যা একটি চওড়া ব্যান্ড গঠন করে।</p>
+            </div>
+
+            <!-- Clean Formula Box -->
+            <div class="formula-container">
+                <div class="formula-header">Primary Equation</div>
+                <div class="formula-math">$$ E_g = E_C - E_V $$</div>
+                <div class="formula-vars">
+                    <div class='var-item'><span class='var-sym'>$$ E_C $$</span><span class='var-name'>Conduction Band Edge</span><span class='var-unit'>eV</span></div><div class='var-item'><span class='var-sym'>$$ E_V $$</span><span class='var-name'>Valence Band Edge</span><span class='var-unit'>eV</span></div>
+                </div>
+            </div>
+
+            <!-- Clean Visual -->
+            <div class="visual-box">
+                <div class="visual-title">Visual Observation: Band Formation Simulation</div>
+                <div class="visual-desc">As interatomic distance decreases, discrete atomic energy levels merge and split into continuous bands (Conduction and Valence bands).</div>
+                <div class="canvas-wrapper"><canvas id="vis_5"></canvas></div>
+            </div>
+
+            <!-- Math Section -->
+            <div class="math-section">
+                <div class="math-header">Practical Application</div>
+                <p class="eng text-green-900">If E_C is at 2.1 eV and E_V is at 1.0 eV, what is the Band Gap E_g?</p>
+                <p class="ban bengali-text border-green-300 text-green-800">E_C = 2.1 eV এবং E_V = 1.0 eV হলে ব্যান্ড গ্যাপ E_g কত?</p>
+                
+                <div class="math-canvas-wrapper"><canvas id="math_5"></canvas></div>
+                
+                <div class="math-ans">Result: E_g = 2.1 - 1.0 = 1.1 eV (Silicon)</div>
+            </div>
+
+            <!-- Questions -->
+            <div class="question-box">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">Review Questions</h3>
+                <div class="space-y-2">
+                    <div class='q-item'>• 1. Explain how energy bands are formed in solids.</div><div class='q-item'>• 2. What is a forbidden energy gap?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 pb-4 border-b border-slate-200">Topic 7: Hall Effect</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Historical Context</h3>
+                <p class="eng">Discovered by Edwin Hall in 1879 while working on his doctoral degree. He found that a magnetic field alters the current distribution in a conductor.</p>
+                <p class="ban bengali-text">১৮৭৯ সালে এডউইন হল (Edwin Hall) এটি আবিষ্কার করেন। তিনি দেখেন যে চৌম্বক ক্ষেত্র একটি পরিবাহীর কারেন্ট বণ্টনকে পরিবর্তন করে দেয়।</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Core Postulates</h3>
+                <div class="space-y-4">
+                    <div><p class='eng'>1. Lorentz Force: A magnetic field exerts a transverse force on moving charge carriers.</p><p class='ban bengali-text'>১. লরেঞ্জ বল: চৌম্বক ক্ষেত্র চলন্ত চার্জ ক্যারিয়ারের ওপর আড়াআড়ি বল প্রয়োগ করে।</p></div><div><p class='eng'>2. Hall Voltage: The accumulation of charges on one face creates a voltage that balances the magnetic force.</p><p class='ban bengali-text'>২. হল ভোল্টেজ: একপাশে চার্জ জমা হওয়ার কারণে যে ভোল্টেজ তৈরি হয়, যা ম্যাগনেটিক বলকে নিষ্ক্রিয় করে।</p></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Mathematical Derivation</h3>
+                <p class="eng bg-slate-50 p-4 rounded border border-slate-200 font-serif text-slate-600">1. Magnetic Force F_m = e(v_d)B. 2. Electric Force F_e = e(E_H). 3. At equilibrium, F_m = F_e ⇒ E_H = (v_d)B. 4. We know v_d = J/(ne) and V_H = E_H * d. 5. Substitute v_d: V_H = (B * I) / (n * e * d).</p>
+                <p class="ban bengali-text mt-3">প্রমাণ: ১. ম্যাগনেটিক বল F_m = e(v_d)B। ২. বৈদ্যুতিক বল F_e = e(E_H)। ৩. ভারসাম্য অবস্থায় F_m = F_e ⇒ E_H = (v_d)B। ৪. v_d = J/(ne) এবং V_H = E_H * d। ৫. v_d এর মান বসিয়ে পাই V_H = (B * I) / (n * e * d)।</p>
+            </div>
+
+            <!-- Clean Formula Box -->
+            <div class="formula-container">
+                <div class="formula-header">Primary Equation</div>
+                <div class="formula-math">$$ V_H = \frac{B \cdot I}{n \cdot e \cdot d} $$</div>
+                <div class="formula-vars">
+                    <div class='var-item'><span class='var-sym'>$$ V_H $$</span><span class='var-name'>Hall Voltage</span><span class='var-unit'>V</span></div><div class='var-item'><span class='var-sym'>$$ B $$</span><span class='var-name'>Magnetic Field</span><span class='var-unit'>T (Tesla)</span></div><div class='var-item'><span class='var-sym'>$$ I $$</span><span class='var-name'>Current</span><span class='var-unit'>A</span></div>
+                </div>
+            </div>
+
+            <!-- Clean Visual -->
+            <div class="visual-box">
+                <div class="visual-title">Visual Observation: Hall Deflection</div>
+                <div class="visual-desc">Electrons flowing through a slab are pushed upwards by a magnetic field, resulting in charge accumulation and the creation of a Hall Voltage.</div>
+                <div class="canvas-wrapper"><canvas id="vis_7"></canvas></div>
+            </div>
+
+            <!-- Math Section -->
+            <div class="math-section">
+                <div class="math-header">Practical Application</div>
+                <p class="eng text-green-900">Calculate V_H if B=2T, I=5A, n=10^28 m^-3, e=1.6x10^-19C, d=0.001m.</p>
+                <p class="ban bengali-text border-green-300 text-green-800">B=2T, I=5A, n=10^28, e=1.6x10^-19, d=0.001m হলে V_H কত?</p>
+                
+                <div class="math-canvas-wrapper"><canvas id="math_7"></canvas></div>
+                
+                <div class="math-ans">Result: 6.25 μV</div>
+            </div>
+
+            <!-- Questions -->
+            <div class="question-box">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">Review Questions</h3>
+                <div class="space-y-2">
+                    <div class='q-item'>• 1. What is Hall Effect? What is its significance?</div><div class='q-item'>• 2. Derive the expression for Hall voltage.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 pb-4 border-b border-slate-200">Topic 8 & 9: Semiconductors & Fermi Level Shifts</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Historical Context</h3>
+                <p class="eng">The concept of doping semiconductors (adding impurities to intrinsic silicon/germanium) revolutionized electronics, leading to the invention of the transistor at Bell Labs in 1947.</p>
+                <p class="ban bengali-text">বিশুদ্ধ সিলিকন বা জার্মেনিয়ামে ভেজাল মিশিয়ে (ডোপিং) সেমিকন্ডাক্টরের বৈশিষ্ট্য পরিবর্তন করার ধারণাটি ইলেকট্রনিক্সে বিপ্লব ঘটায়, যার ফলে ১৯৪৭ সালে ট্রানজিস্টর আবিষ্কৃত হয়।</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Core Postulates</h3>
+                <div class="space-y-4">
+                    <div><p class='eng'>1. N-Type: Doped with Pentavalent atoms (e.g. Phosphorus). Majority carriers are electrons. Fermi level shifts towards Conduction Band.</p><p class='ban bengali-text'>১. N-Type: পঞ্চযোজী পরমাণু (ফসফরাস) দিয়ে ডোপ করা হয়। ফার্মি লেভেল কন্ডাকশন ব্যান্ডের কাছে উঠে যায়।</p></div><div><p class='eng'>2. P-Type: Doped with Trivalent atoms (e.g. Boron). Majority carriers are holes. Fermi level shifts towards Valence Band.</p><p class='ban bengali-text'>২. P-Type: ত্রিযোজী পরমাণু (বোরন) দিয়ে ডোপ করা হয়। ফার্মি লেভেল ভ্যালেন্স ব্যান্ডের কাছে নেমে যায়।</p></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Mathematical Derivation</h3>
+                <p class="eng bg-slate-50 p-4 rounded border border-slate-200 font-serif text-slate-600">Mass Action Law states that at thermal equilibrium, the product of electron concentration (n) and hole concentration (p) is a constant (n_i^2) regardless of doping. n * p = n_i^2.</p>
+                <p class="ban bengali-text mt-3">মাস অ্যাকশন ল অনুযায়ী, তাপীয় ভারসাম্যে ইলেকট্রন (n) এবং হোল (p) ঘনত্বের গুণফল সবসময় ধ্রুবক (n_i^2) থাকে। n * p = n_i^2।</p>
+            </div>
+
+            <!-- Clean Formula Box -->
+            <div class="formula-container">
+                <div class="formula-header">Primary Equation</div>
+                <div class="formula-math">$$ n \cdot p = n_i^2 $$</div>
+                <div class="formula-vars">
+                    <div class='var-item'><span class='var-sym'>$$ n $$</span><span class='var-name'>Electron Concentration</span><span class='var-unit'>cm^{-3}</span></div><div class='var-item'><span class='var-sym'>$$ p $$</span><span class='var-name'>Hole Concentration</span><span class='var-unit'>cm^{-3}</span></div><div class='var-item'><span class='var-sym'>$$ n_i $$</span><span class='var-name'>Intrinsic Carrier Concentration</span><span class='var-unit'>cm^{-3}</span></div>
+                </div>
+            </div>
+
+            <!-- Clean Visual -->
+            <div class="visual-box">
+                <div class="visual-title">Visual Observation: N-Type & P-Type Lattices</div>
+                <div class="visual-desc">Visualizing Phosphorus donating an extra electron (N-type) and Boron creating a hole (P-type).</div>
+                <div class="canvas-wrapper"><canvas id="vis_8"></canvas></div>
+            </div>
+
+            <!-- Math Section -->
+            <div class="math-section">
+                <div class="math-header">Practical Application</div>
+                <p class="eng text-green-900">If n_i = 1.5 x 10^10 /cm^3, and we dope with N_D = 10^16 /cm^3 (so n ≈ 10^16). Find hole concentration p.</p>
+                <p class="ban bengali-text border-green-300 text-green-800">যদি n_i = 1.5 x 10^10 এবং n = 10^16 হয়, তবে p কত?</p>
+                
+                <div class="math-canvas-wrapper"><canvas id="math_8"></canvas></div>
+                
+                <div class="math-ans">Result: p = 2.25 x 10^4 /cm^3</div>
+            </div>
+
+            <!-- Questions -->
+            <div class="question-box">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">Review Questions</h3>
+                <div class="space-y-2">
+                    <div class='q-item'>• 1. Distinguish between Intrinsic and Extrinsic semiconductors.</div><div class='q-item'>• 2. Show the position of Fermi level in N-type and P-type semiconductors.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 pb-4 border-b border-slate-200">Topic 11: Solar Cell Basics</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Historical Context</h3>
+                <p class="eng">The modern photovoltaic effect was practically demonstrated by Bell Labs in 1954 when they created the first practical silicon solar cell with 6% efficiency.</p>
+                <p class="ban bengali-text">১৯৫৪ সালে বেল ল্যাবস (Bell Labs) প্রথম কার্যকর সিলিকন সোলার সেল তৈরি করে, যার কার্যক্ষমতা ছিল ৬%।</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Core Postulates</h3>
+                <div class="space-y-4">
+                    <div><p class='eng'>1. Photovoltaic Effect: Conversion of light (photons) directly into electricity.</p><p class='ban bengali-text'>১. ফটোভোল্টাইক ইফেক্ট: আলো (ফোটন) সরাসরি বিদ্যুতে রূপান্তরের প্রক্রিয়া।</p></div><div><p class='eng'>2. Working Mechanism: A photon strikes the depletion region, creating an electron-hole pair which is separated by the built-in electric field.</p><p class='ban bengali-text'>২. কাজের প্রক্রিয়া: ফোটন ডিপলেশন স্তরে আঘাত করে একটি ইলেকট্রন-হোল জোড় তৈরি করে যা ভেতরের বৈদ্যুতিক ক্ষেত্রের কারণে আলাদা হয়ে যায়।</p></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-3">Mathematical Derivation</h3>
+                <p class="eng bg-slate-50 p-4 rounded border border-slate-200 font-serif text-slate-600">The efficiency (η) of a solar cell is defined as the maximum electrical power output divided by the incident light power. P_out = V_oc * I_sc * FF (Fill Factor). η = (P_out) / P_in.</p>
+                <p class="ban bengali-text mt-3">সোলার সেলের কার্যক্ষমতা (η) হলো সর্বোচ্চ উৎপাদিত বৈদ্যুতিক শক্তি এবং আপতিত আলোক শক্তির অনুপাত। η = P_out / P_in।</p>
+            </div>
+
+            <!-- Clean Formula Box -->
+            <div class="formula-container">
+                <div class="formula-header">Primary Equation</div>
+                <div class="formula-math">$$ \eta = \frac{P_{out}}{P_{in}} \times 100\% $$</div>
+                <div class="formula-vars">
+                    <div class='var-item'><span class='var-sym'>$$ \eta $$</span><span class='var-name'>Efficiency</span><span class='var-unit'>%</span></div><div class='var-item'><span class='var-sym'>$$ P_{out} $$</span><span class='var-name'>Output Electrical Power</span><span class='var-unit'>Watts (W)</span></div><div class='var-item'><span class='var-sym'>$$ P_{in} $$</span><span class='var-name'>Input Solar Power</span><span class='var-unit'>Watts (W)</span></div>
+                </div>
+            </div>
+
+            <!-- Clean Visual -->
+            <div class="visual-box">
+                <div class="visual-title">Visual Observation: Solar Cell Generation</div>
+                <div class="visual-desc">Photons strike the PN junction, generating electron-hole pairs that are swept in opposite directions.</div>
+                <div class="canvas-wrapper"><canvas id="vis_11"></canvas></div>
+            </div>
+
+            <!-- Math Section -->
+            <div class="math-section">
+                <div class="math-header">Practical Application</div>
+                <p class="eng text-green-900">A solar cell receives 1000 W/m² of sunlight (Area = 0.1 m²). It produces V_oc = 0.6V, I_sc = 3A, and Fill Factor (FF) = 0.8. Calculate efficiency η.</p>
+                <p class="ban bengali-text border-green-300 text-green-800">1000 W/m² আলো, Area = 0.1 m², V_oc = 0.6V, I_sc = 3A, FF = 0.8 হলে কার্যক্ষমতা কত?</p>
+                
+                <div class="math-canvas-wrapper"><canvas id="math_11"></canvas></div>
+                
+                <div class="math-ans">Result: 1.44%</div>
+            </div>
+
+            <!-- Questions -->
+            <div class="question-box">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">Review Questions</h3>
+                <div class="space-y-2">
+                    <div class='q-item'>• 1. Explain the working principle of a solar cell.</div><div class='q-item'>• 2. What is Fill Factor in a solar cell?</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+    // Clean Physics Engine (Light Theme)
+    function initEngine() {
+        const C = {
+            circle: (ctx, x, y, r, color) => { ctx.beginPath(); ctx.arc(x, y, r, 0, 6.28); ctx.fillStyle = color; ctx.fill(); },
+            grid: (ctx, w, h) => { ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth=1; for(let i=0; i<w; i+=40) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,h); ctx.stroke(); } for(let i=0; i<h; i+=40) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(w,i); ctx.stroke(); } }
+        };
+
+        // VIS_1: Free Electron
+        const cv1 = document.getElementById('vis_1');
+        if(cv1) {
+            const ctx = cv1.getContext('2d'); const w = cv1.width = cv1.clientWidth, h = cv1.height = cv1.clientHeight;
+            let e1 = Array.from({length: 80}, () => ({x: Math.random()*w, y: Math.random()*h, vx: (Math.random()-0.5)*8, vy: (Math.random()-0.5)*8}));
+            let i1 = []; for(let x=60; x<w; x+=120) for(let y=60; y<h; y+=120) i1.push({x,y});
+            function l1() {
+                ctx.clearRect(0,0,w,h); C.grid(ctx,w,h);
+                i1.forEach(i => { C.circle(ctx, i.x, i.y, 20, '#fee2e2'); C.circle(ctx, i.x, i.y, 10, '#ef4444'); });
+                e1.forEach(e => { e.x+=e.vx; e.y+=e.vy; if(e.x<0||e.x>w) e.vx*=-1; if(e.y<0||e.y>h) e.vy*=-1; C.circle(ctx, e.x, e.y, 4, '#0284c7'); });
+                requestAnimationFrame(l1);
+            } l1();
+        }
+
+        // VIS_2: Drift & Diffusion
+        const cv2 = document.getElementById('vis_2');
+        if(cv2) {
+            const ctx = cv2.getContext('2d'); const w = cv2.width = cv2.clientWidth, h = cv2.height = cv2.clientHeight;
+            let eDrift = Array.from({length: 100}, () => ({x: Math.random()*(w/2-20), y: Math.random()*h, vx: (Math.random()-0.5)*2, vy: (Math.random()-0.5)*2}));
+            let eDiff = Array.from({length: 200}, () => ({x: w/2+20+Math.random()*50, y: h/2+(Math.random()-0.5)*50, vx: (Math.random()-0.5)*6, vy: (Math.random()-0.5)*6}));
+            function l2() {
+                ctx.clearRect(0,0,w,h);
+                ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(w/2,0); ctx.lineTo(w/2,h); ctx.stroke();
+                ctx.fillStyle = '#fef3c7'; ctx.fillRect(0,0,w/2,h); ctx.fillStyle = '#d97706'; ctx.font="18px Inter"; ctx.fillText("E-Field >>", 30, 30);
+                eDrift.forEach(e => { e.x+=e.vx+4; e.y+=e.vy; if(e.x>w/2) e.x=0; if(e.y<0||e.y>h) e.vy*=-1; C.circle(ctx, e.x, e.y, 4, '#0284c7'); });
+                ctx.fillStyle = '#059669'; ctx.fillText("Diffusion spreading...", w/2+30, 30);
+                eDiff.forEach(e => { e.x+=e.vx; e.y+=e.vy; if(e.x<w/2||e.x>w||e.y<0||e.y>h) {e.x=w/2+20+Math.random()*20; e.y=h/2;} C.circle(ctx, e.x, e.y, 3, '#059669'); });
+                requestAnimationFrame(l2);
+            } l2();
+        }
+
+        // VIS_3: Fermi Dirac Morph
+        const cv3 = document.getElementById('vis_3');
+        if(cv3) {
+            const ctx = cv3.getContext('2d'); const w = cv3.width = cv3.clientWidth, h = cv3.height = cv3.clientHeight;
+            let t3=0;
+            function l3() {
+                ctx.clearRect(0,0,w,h); C.grid(ctx,w,h); t3+=0.02; let temp = 0.1 + Math.abs(Math.sin(t3))*5;
+                ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(50,h-50); ctx.lineTo(w-50,h-50); ctx.stroke(); ctx.beginPath(); ctx.moveTo(50,h-50); ctx.lineTo(50,50); ctx.stroke();
+                ctx.fillStyle='#64748b'; ctx.font="16px Inter"; ctx.fillText("Energy (E) ->", w-150, h-20); ctx.fillText("f(E) Probability", 10, 30);
+                let EF = w/2; ctx.setLineDash([5,5]); ctx.strokeStyle='#ef4444'; ctx.beginPath(); ctx.moveTo(EF,h-50); ctx.lineTo(EF,50); ctx.stroke(); ctx.setLineDash([]); ctx.fillText("E_F", EF-15, h-20);
+                ctx.strokeStyle='#0284c7'; ctx.lineWidth=4; ctx.beginPath();
+                for(let x=50; x<w-50; x+=5) { let E=(x-50)/100, E_F=(EF-50)/100, prob = 1/(1+Math.exp((E-E_F)*temp)), y=(h-50)-prob*(h-100); if(x===50) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+                ctx.stroke(); C.circle(ctx, EF, (h-50)-0.5*(h-100), 8, '#d97706'); ctx.fillStyle='#d97706'; ctx.fillText("0.5 at E_F", EF+15, (h-50)-0.5*(h-100));
+                requestAnimationFrame(l3);
+            } l3();
+        }
+
+        // Default spinner for other canvases
+        document.querySelectorAll('canvas').forEach(canvas => {
+            if(!canvas.id.match(/vis_1|vis_2|vis_3/)) {
+                let ctx = canvas.getContext('2d');
+                let t=0;
+                function spin() {
+                    let w = canvas.width = canvas.clientWidth, h = canvas.height = canvas.clientHeight;
+                    ctx.clearRect(0,0,w,h); C.grid(ctx,w,h); t+=0.05;
+                    ctx.fillStyle='#64748b'; ctx.font="18px Inter"; ctx.fillText("Simulation Running...", 20, 30);
+                    C.circle(ctx, w/2 + Math.cos(t)*80, h/2 + Math.sin(t)*30, 10, '#0284c7');
+                    requestAnimationFrame(spin);
+                } spin();
+            }
+        });
+    }
+    window.onload = () => { initEngine(); setTimeout(() => MathJax.typeset(), 1000); };
+    </script>
+</body>
+</html>
