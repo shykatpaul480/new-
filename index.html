@@ -1,276 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics MCQ Question Bank</title>
-    <style>
-        :root {
-            --primary: #4F46E5;
-            --primary-hover: #4338CA;
-            --bg-color: #F3F4F6;
-            --card-bg: #FFFFFF;
-            --text-main: #1F2937;
-            --text-muted: #6B7280;
-            --border: #E5E7EB;
-            --correct: #10B981;
-            --incorrect: #EF4444;
-            --very-high: #FCA5A5;
-            --high: #FDBA74;
-            --medium: #FDE047;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; padding: 20px; }
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 10px; }
-        .stats { color: var(--text-muted); font-size: 1.1rem; font-weight: 500; }
-        
-        .controls { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 30px; background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); max-width: 900px; margin-left: auto; margin-right: auto; }
-        .control-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 200px; }
-        .control-group label { font-weight: 600; font-size: 0.9rem; color: var(--text-muted); }
-        input, select { padding: 10px 15px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s; }
-        input:focus, select:focus { border-color: var(--primary); }
-        
-        .progress-container { max-width: 800px; margin: 0 auto 20px; text-align: center; }
-        .progress-text { font-weight: bold; margin-bottom: 5px; color: var(--primary); }
-        .progress-bar { width: 100%; background-color: #E5E7EB; border-radius: 999px; height: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; background-color: var(--primary); width: 0%; transition: width 0.3s ease; }
-
-        .mcq-container { max-width: 800px; margin: 0 auto; }
-        .mcq-card { background: var(--card-bg); border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: none; }
-        .mcq-card.active { display: block; animation: fadeIn 0.3s ease; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-        .priority-badge { padding: 5px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
-        .p-very-high { background-color: #FEE2E2; color: #991B1B; }
-        .p-high { background-color: #FFEDD5; color: #9A3412; }
-        .p-medium { background-color: #FEF9C3; color: #854D0E; }
-        .topic-badge { background-color: #E0E7FF; color: #3730A3; padding: 5px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
-        
-        .question-text { font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; }
-        
-        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .option { padding: 15px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; }
-        .option:hover { border-color: var(--primary); background-color: #F5F3FF; }
-        .option.selected { border-color: var(--primary); background-color: #EEF2FF; font-weight: 600; }
-        .option.correct { border-color: var(--correct); background-color: #ECFDF5; color: #065F46; }
-        .option.incorrect { border-color: var(--incorrect); background-color: #FEF2F2; color: #991B1B; }
-        
-        .btn { padding: 10px 20px; background-color: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-        .btn:hover { background-color: var(--primary-hover); }
-        .btn-outline { background-color: transparent; color: var(--primary); border: 2px solid var(--primary); }
-        .btn-outline:hover { background-color: #EEF2FF; }
-        .btn:disabled { background-color: #9CA3AF; cursor: not-allowed; }
-        
-        .answer-section { margin-top: 20px; padding: 20px; border-radius: 8px; background-color: #F9FAFB; border-left: 4px solid var(--primary); display: none; }
-        .answer-section.visible { display: block; animation: fadeIn 0.3s; }
-        .correct-answer-text { font-weight: 700; color: var(--correct); margin-bottom: 10px; font-size: 1.1rem; }
-        .explanation { color: var(--text-main); margin-bottom: 15px; }
-        .source { font-size: 0.9rem; color: var(--text-muted); font-style: italic; }
-        
-        .navigation { display: flex; justify-content: space-between; max-width: 800px; margin: 30px auto; gap: 15px; }
-        
-        @media (max-width: 600px) {
-            .controls { flex-direction: column; }
-            .navigation { flex-direction: column; }
-            .btn { width: 100%; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Chemical Requisition Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; max-width: 450px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input, select, button { width: 100%; padding: 10px; box-sizing: border-box; }
+    button { background-color: #28a745; color: white; border: none; font-size: 16px; cursor: pointer; }
+    button:hover { background-color: #218838; }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Physics MCQ Question Bank</h1>
-        <div class="stats" id="stats">Loading MCQs...</div>
-    </header>
+  <h2>ল্যাব আইটেম রিকোয়েস্ট ফর্ম</h2>
 
-    <div class="controls">
-        <div class="control-group">
-            <label for="searchInput">Search Questions</label>
-            <input type="text" id="searchInput" placeholder="Type a keyword...">
-        </div>
-        <div class="control-group">
-            <label for="topicFilter">Filter by Topic</label>
-            <select id="topicFilter">
-                <option value="all">All Topics</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label for="priorityFilter">Filter by Priority</label>
-            <select id="priorityFilter">
-                <option value="all">All Priorities</option>
-                <option value="🔴 VERY HIGH PRIORITY">🔴 Very High</option>
-                <option value="🟠 HIGH PRIORITY">🟠 High</option>
-                <option value="🟡 MEDIUM PRIORITY">🟡 Medium</option>
-            </select>
-        </div>
+  <form id="labForm">
+    <div class="form-group">
+      <label for="regNo">স্টুডেন্ট রেজিস্ট্রেশন নম্বর:</label>
+      <input type="text" id="regNo" name="regNo" placeholder="যেমন: 2021-XXX-XXX" required>
     </div>
 
-    <div class="progress-container">
-        <div class="progress-text" id="progressText">Question 1 of X</div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
+    <div class="form-group">
+      <label for="itemSelect">রাসায়নিক/আইটেম সিলেক্ট করুন:</label>
+      <select id="itemSelect" name="itemName" required>
+        <option value="">আইটেম লোড হচ্ছে...</option>
+      </select>
     </div>
 
-    <div class="mcq-container" id="mcqContainer">
-        <!-- Cards injected via JS -->
+    <div class="form-group">
+      <label for="quantity">পরিমাণ (Amount / Quantity):</label>
+      <input type="text" id="quantity" name="quantity" placeholder="যেমন: 50 ml / 10 gram" required>
     </div>
 
-    <div class="navigation">
-        <button class="btn btn-outline" id="prevBtn" onclick="prevQuestion()">&#8592; Previous</button>
-        <button class="btn" id="nextBtn" onclick="nextQuestion()">Next &#8594;</button>
-    </div>
+    <button type="submit" id="submitBtn">সাবমিট করুন</button>
+  </form>
 
-    <script>
-        const mcqs = [{"q": "Who developed the Free electron theory in 1900?", "o": ["Newton & Einstein", "Drude & Lorentz", "Maxwell & Boltzmann", "Bohr & Rutherford"], "a": 1, "e": "Free electron theory was developed by Drude & Lorentz in 1900.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Free Electron Theory", "s": "Slide 2"}, {"q": "According to the Free Electron Theory, which electrons are free to move in the solid?", "o": ["Core electrons", "All electrons", "Valence electrons", "Protons"], "a": 2, "e": "Valence electrons are free to move in the solid like molecules of a gas in a container.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Free Electron Theory", "s": "Slide 2"}, {"q": "What is the collection of all valence electrons in a metal called?", "o": ["Electron cloud", "Electron gas", "Core electrons", "Ion lattice"], "a": 1, "e": "The collection of all valence electrons in a metal forms an electron gas.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Free Electron Theory", "s": "Slide 4"}, {"q": "In the free electron theory, the collisions between electrons and positive ions are assumed to be:", "o": ["Inelastic", "Elastic", "Perfectly inelastic", "Non-existent"], "a": 1, "e": "All the collisions (electron & electron, electron & positive ion) are considered elastic.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Free Electron Theory", "s": "Slide 4"}, {"q": "Which of the following is a failure of the Free Electron Theory?", "o": ["It explains Ohm's law", "It fails to explain the concept of specific heat of metals", "It explains electrical conductivity", "It explains optical properties of metals"], "a": 1, "e": "Free electron theory failed to explain the specific heat of metals, photoelectric effect, and the difference between conductors, insulators, and semiconductors.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Free Electron Theory", "s": "Slide 16"}, {"q": "Diffusion current is caused by the ________ of charge carriers.", "o": ["Electric field", "Magnetic field", "Concentration gradient", "Temperature gradient"], "a": 2, "e": "Diffusion current is due to the concentration gradient of charge carriers.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Diffusion Current", "s": "Slide 5"}, {"q": "The flow of charge carriers due to an applied voltage or electric field is called:", "o": ["Diffusion current", "Drift current", "Displacement current", "Convection current"], "a": 1, "e": "Drift current is the flow of charge carriers due to an applied voltage/electric field.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Drift Current", "s": "Slide 6"}, {"q": "Electron mobility is defined as:", "o": ["How fast an electron moves in a vacuum", "The measurement of how easily an electron can move through a solid under an external electric field", "The mass of an electron in motion", "The charge of a moving electron"], "a": 1, "e": "Electron mobility is the measurement of how easily an electron/charge can move through a solid under the influence of an external electric field.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Mobility", "s": "Slide 8"}, {"q": "What is the formula for current density (J) in terms of drift velocity (Vd)?", "o": ["J = nqA", "J = nqVd", "J = I/Vd", "J = n/qVd"], "a": 1, "e": "Current density J = I/A = nqVd, where n is charge concentration and q is charge.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Drift Velocity", "s": "Slide 7"}, {"q": "According to band theory, what happens when atoms come together to form a solid?", "o": ["Energy levels remain discrete", "Energy levels disappear", "Discrete atomic energy levels overlap and split into continuous ranges called energy bands", "Electrons are expelled from the atoms"], "a": 2, "e": "When atoms come together to form a solid, their discrete atomic energy levels overlap and split into continuous ranges called energy bands.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Band Theory", "s": "Slide 17"}, {"q": "The energy gap between the conduction band and the valence band is known as:", "o": ["Fermi energy", "Ionization energy", "Energy band gap or forbidden energy band gap", "Work function"], "a": 2, "e": "Energy gap between conduction band and valence band is known as energy band gap.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Band Theory", "s": "Slide 18"}, {"q": "For an insulator, the energy band gap (Eg) is typically:", "o": ["Eg = 0", "Eg < 3 eV", "Eg > 3 eV", "Eg = 1 eV"], "a": 2, "e": "For insulators, the band gap Eg > 3 eV.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Classification of Materials", "s": "Slide 19"}, {"q": "In a conductor, what is the value of the energy band gap (Eg)?", "o": ["Eg > 3 eV", "Eg < 3 eV", "Eg = 0", "Eg = 5 eV"], "a": 2, "e": "For conductors, the valence and conduction bands overlap, so Eg = 0.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Classification of Materials", "s": "Slide 19"}, {"q": "Which of the following describes an intrinsic semiconductor?", "o": ["It is heavily doped with impurities", "It is a pure semiconductor without any doping", "It has more electrons than holes", "It has more holes than electrons"], "a": 1, "e": "Intrinsic semiconductors are pure semiconductors without any doping.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Intrinsic Semiconductor", "s": "Slide 21"}, {"q": "In an intrinsic semiconductor, what is the relationship between electron concentration (n) and hole concentration (p)?", "o": ["n > p", "n < p", "n = p = ni", "n * p = 1"], "a": 2, "e": "In an intrinsic semiconductor, the number of electrons equals the number of holes (n = p = ni).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Intrinsic Semiconductor", "s": "Slide 22"}, {"q": "An n-type semiconductor is created by doping with:", "o": ["Trivalent impurities", "Pentavalent impurities", "Bivalent impurities", "No impurities"], "a": 1, "e": "N-type semiconductors are doped with pentavalent impurities (e.g., P, As, Sb).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Extrinsic Semiconductor", "s": "Slide 26"}, {"q": "In an n-type semiconductor, what are the majority and minority charge carriers?", "o": ["Majority: Holes, Minority: Electrons", "Majority: Electrons, Minority: Holes", "Majority: Electrons, Minority: Protons", "Majority: Holes, Minority: Neutrons"], "a": 1, "e": "In n-type, electrons are the majority carriers and holes are the minority carriers.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Extrinsic Semiconductor", "s": "Slide 26"}, {"q": "A p-type semiconductor is created by doping with which type of impurities?", "o": ["Trivalent impurities", "Pentavalent impurities", "Tetravalent impurities", "Hexavalent impurities"], "a": 0, "e": "P-type semiconductors are doped with trivalent impurities (e.g., Indium, Gallium, Aluminium, Boron).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Extrinsic Semiconductor", "s": "Slide 26"}, {"q": "Which of the following is true for a p-type semiconductor?", "o": ["n > p", "n = p", "n < p", "n = 0"], "a": 2, "e": "In a p-type semiconductor, the concentration of holes (p) is greater than electrons (n), so n < p.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Extrinsic Semiconductor", "s": "Slide 24"}, {"q": "The total drift current in a semiconductor is the sum of:", "o": ["Electron diffusion and hole diffusion", "Electron drift current and hole drift current", "Conduction current and displacement current", "Forward and reverse current"], "a": 1, "e": "Total drift current J = Jp + Jn (Hole drift current + Electron drift current).", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Semiconductor Conductivity", "s": "Slide 25"}, {"q": "Which type of semiconductor is used for making optical devices (like LEDs)?", "o": ["Indirect band gap semiconductor", "Direct band gap semiconductor", "Intrinsic semiconductor only", "Insulators"], "a": 1, "e": "Direct band gap semiconductors are efficient photon emitters and are used for making optical devices.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Direct Band Gap", "s": "Slide 27"}, {"q": "In an indirect band gap semiconductor, what is required for an electron and hole to recombine and conserve momentum?", "o": ["Photon", "Phonon", "Proton", "Neutron"], "a": 1, "e": "When an e- and hole recombine in an indirect-band gap semiconductor, phonons must be involved to conserve momentum.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Indirect Band Gap", "s": "Slide 28"}, {"q": "What is 'effective mass' of an electron inside a crystal?", "o": ["Its mass in a complete vacuum", "An altered mass due to the existence of different potentials inside the crystal", "The mass of an electron at absolute zero", "The combined mass of an electron and a hole"], "a": 1, "e": "Due to different potentials inside the crystal, the electron accelerates at a different rate, resulting in an altered mass called effective-mass.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Effective Mass", "s": "Slide 29"}, {"q": "At absolute zero (T = 0 K), what is the Fermi energy (Ef)?", "o": ["The lowest occupied energy level", "The energy level up to which all states are occupied", "The energy level where occupancy is zero", "The energy of a free electron in a vacuum"], "a": 1, "e": "Fermi energy is the energy level up to which all states are occupied at 0 K.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Fermi Energy", "s": "Slide 30"}, {"q": "At a non-zero temperature, what is the probability of occupancy at the Fermi energy level (E = Ef)?", "o": ["1", "0", "0.5", "Depends on the material"], "a": 2, "e": "At T \u2260 0 K, if E = Ef, the Fermi distribution function f(E) = 0.5 (the occupancy is half).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Fermi Energy", "s": "Slide 30"}, {"q": "Where does the Fermi energy level lie in an intrinsic semiconductor?", "o": ["Close to the conduction band", "Close to the valence band", "Exactly in the middle of the band gap", "Inside the conduction band"], "a": 2, "e": "For an intrinsic semiconductor, Ef = (Ec + Ev)/2, which is in the middle of the band gap.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Fermi Energy Level", "s": "Slide 31"}, {"q": "In an N-type semiconductor, the Fermi energy level shifts towards:", "o": ["The Valence Band", "The Conduction Band", "The middle of the bandgap", "Below the Valence Band"], "a": 1, "e": "In an N-type semiconductor, Ef is closer to the Conduction Band (Ec).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Fermi Energy Level", "s": "Slide 31"}, {"q": "In a P-type semiconductor, the Fermi energy level is closer to:", "o": ["The Conduction Band", "The Valence Band", "The exact center", "None of the above"], "a": 1, "e": "In a P-type semiconductor, Ef is closer to the Valence Band (Ev).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Fermi Energy Level", "s": "Slide 31"}, {"q": "The Hall Effect is observed when a current-carrying conductor is placed in a:", "o": ["Parallel magnetic field", "Perpendicular electric field", "Perpendicular magnetic field", "Parallel electric field"], "a": 2, "e": "Hall Effect occurs when a current carrying conductor is placed in a perpendicular magnetic field.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Hall Effect", "s": "Slide 32"}, {"q": "What does the Hall Effect directly determine in a given sample?", "o": ["The temperature of the sample", "The mass of the sample", "Both the sign and density of charge carriers", "The atomic number of the material"], "a": 2, "e": "It directly determines both the sign and density of charge carriers in a given sample.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Hall Effect", "s": "Slide 32"}, {"q": "The Hall voltage (VH) is developed because of the accumulation of charges at the opposite faces of the sample due to:", "o": ["Electric force", "Magnetic force (Fm)", "Gravitational force", "Nuclear force"], "a": 1, "e": "Due to the magnetic force (Fm), charges accumulate at opposite faces, developing the Hall voltage.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Hall Effect", "s": "Slide 34"}, {"q": "If the Hall coefficient (RH) is less than zero (RH < 0), what are the majority charge carriers?", "o": ["Holes", "Electrons", "Protons", "Neutrons"], "a": 1, "e": "If RH < 0, then electrons are the majority charge carriers (n-type semiconductor).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Hall Effect", "s": "Slide 36"}, {"q": "If the Hall coefficient (RH) is greater than zero (RH > 0), the material is a:", "o": ["p-type semiconductor", "n-type semiconductor", "intrinsic semiconductor", "superconductor"], "a": 0, "e": "If RH > 0, then holes are the majority charge carriers (p-type semiconductor).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Hall Effect", "s": "Slide 36"}, {"q": "Solar cells convert the energy of light into electrical energy using the:", "o": ["Photoelectric effect", "Photovoltaic effect", "Compton effect", "Hall effect"], "a": 1, "e": "Solar cells, also called photovoltaic cells, use the photovoltaic effect.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Solar Cell", "s": "Slide 39"}, {"q": "A solar cell is essentially composed of:", "o": ["Two identical n-type semiconductors", "Two identical p-type semiconductors", "A p-type and an n-type semiconductor joined together (p-n junction)", "Pure intrinsic silicon only"], "a": 2, "e": "Solar cells are composed of a p-type and an n-type semiconductor joined to create a p-n junction.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Solar Cell", "s": "Slide 39"}, {"q": "When incident photons of suitable wavelength are absorbed in the depletion region of a solar cell, what is created?", "o": ["An electron-hole pair", "Only free electrons", "Only free holes", "Alpha particles"], "a": 0, "e": "The energy transfers to electrons, causing them to jump to the conduction band and leave a hole in the valence band, creating an electron-hole pair.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Solar Cell", "s": "Slide 39"}, {"q": "Ohm's law mathematically states that:", "o": ["V = I / R", "I = V * R", "V = I * R", "R = V * I"], "a": 2, "e": "Ohm's law states that I is proportional to V, leading to V = I * R.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Ohm's Law", "s": "Slide 2"}, {"q": "Which law states that the algebraic sum of currents entering a node is zero?", "o": ["Kirchhoff's Voltage Law (KVL)", "Ohm's Law", "Kirchhoff's Current Law (KCL)", "Faraday's Law"], "a": 2, "e": "Kirchhoff's Current Law (KCL) states the algebraic sum of currents entering a node is zero.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "KCL", "s": "Slide 7"}, {"q": "Kirchhoff\u2019s Current Law (KCL) is based on the principle of:", "o": ["Conservation of Energy", "Conservation of Mass", "Conservation of Charge", "Conservation of Momentum"], "a": 2, "e": "KCL is based on the Law of Conservation of Charge.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "KCL", "s": "Slide 7"}, {"q": "Kirchhoff\u2019s Voltage Law (KVL) is based on the principle of:", "o": ["Conservation of Charge", "Conservation of Energy", "Conservation of Momentum", "Ohm's Law"], "a": 1, "e": "KVL is based on the Law of Conservation of Energy.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "KVL", "s": "Slide 6"}, {"q": "According to KVL, the algebraic sum of all voltages around a closed path (or loop) is:", "o": ["Infinity", "One", "Zero", "Equal to the source voltage only"], "a": 2, "e": "KVL states that the algebraic sum of all voltages around a closed path is zero.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "KVL", "s": "Slide 11"}, {"q": "What is the region around the PN junction called where no free charge carriers exist?", "o": ["Conduction region", "Depletion region", "Saturation region", "Diffusion region"], "a": 1, "e": "The depletion region is the area around the PN junction depleted of free charge carriers.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "PN Junction", "s": "Slide 26"}, {"q": "In a forward-biased PN junction diode, what happens to the depletion region width?", "o": ["It increases", "It remains the same", "It decreases", "It completely vanishes immediately"], "a": 2, "e": "In forward bias, the depletion width decreases (barrier reduces).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Forward Bias", "s": "Slide 28"}, {"q": "What is the approximate knee voltage (cut-in voltage) of a Silicon (Si) diode?", "o": ["0.3 V", "0.7 V", "1.2 V", "5 V"], "a": 1, "e": "The knee voltage of a Silicon diode is approximately 0.7 V.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Diode Characteristics", "s": "Slide 29"}, {"q": "What is the approximate knee voltage of a Germanium (Ge) diode?", "o": ["0.3 V", "0.7 V", "1.0 V", "1.5 V"], "a": 0, "e": "The knee voltage of a Germanium diode is approximately 0.3 V.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Diode Characteristics", "s": "Slide 29"}, {"q": "A diode has forward resistance of the order of:", "o": ["Mega-ohms (M\u03a9)", "Kilo-ohms (k\u03a9)", "A few ohms (\u03a9)", "Infinity"], "a": 2, "e": "Forward bias resistance is very low (a few ohms), while reverse bias is very high (M\u03a9).", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Diode Resistance", "s": "Slide 31"}, {"q": "During reverse bias, the depletion region gets wider and the diode acts as an:", "o": ["Open circuit", "Short circuit", "Amplifier", "Oscillator"], "a": 0, "e": "In reverse bias, the depletion region gets wider, effective resistance increases, and it acts as an open circuit (ideally).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Reverse Bias", "s": "Slide 33"}, {"q": "During reverse bias, a small current develops which is known as:", "o": ["Forward current", "Active current", "Reverse saturation current", "Surge current"], "a": 2, "e": "During reverse bias, a small current flows due to minority carriers, known as reverse saturation current.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Reverse Bias", "s": "Slide 40"}, {"q": "When the reverse bias voltage becomes extremely high, the continuous collision of minority carriers creates electron-hole pairs, causing a sudden large current. This is known as:", "o": ["Forward breakdown", "Avalanche breakdown", "Knee voltage breakdown", "Saturation breakdown"], "a": 1, "e": "This phenomenon is known as Avalanche breakdown, and it can permanently burn off the diode.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Avalanche Breakdown", "s": "Slide 39"}, {"q": "An ideal diode behaves as a ________ when forward biased.", "o": ["Perfect insulator", "Perfect conductor (Short circuit)", "Resistor", "Capacitor"], "a": 1, "e": "An ideal diode has 0 \u03a9 forward resistance, making it a perfect conductor (short circuit).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Ideal Diode", "s": "Slide 41"}, {"q": "In the Practical Diode Model for Silicon, the forward voltage drop is considered to be:", "o": ["0 V", "0.3 V", "0.7 V", "Infinity"], "a": 2, "e": "In the practical diode model, a Silicon diode has a forward voltage drop of approximately 0.7 V.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Diode Models", "s": "Slide 42"}, {"q": "What is the primary function of a rectifier?", "o": ["Convert DC to AC", "Convert AC power to DC power", "Amplify the signal", "Store electrical energy"], "a": 1, "e": "Rectifiers convert AC power to DC power.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Rectifiers", "s": "Slide 48"}, {"q": "In a half-wave rectifier, current flows through the load:", "o": ["During both half cycles", "During negative half cycle only", "During positive half cycle only", "Never"], "a": 2, "e": "In a half-wave rectifier, current flows through the load only during the positive half cycle of the AC input.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Half-Wave Rectifier", "s": "Slide 61"}, {"q": "The maximum efficiency of a half-wave rectifier is:", "o": ["40.6%", "81.2%", "50%", "100%"], "a": 0, "e": "The maximum efficiency of a half-wave rectifier is 40.6%.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Rectifier Efficiency", "s": "Slide 56"}, {"q": "The maximum efficiency of a full-wave rectifier is:", "o": ["40.6%", "81.2%", "50%", "100%"], "a": 1, "e": "The maximum efficiency of a full-wave rectifier is 81.2%.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Rectifier Efficiency", "s": "Slide 56"}, {"q": "The ripple frequency of a half-wave rectifier supplied from a 50 Hz source is:", "o": ["25 Hz", "50 Hz", "100 Hz", "150 Hz"], "a": 1, "e": "For a half-wave rectifier, the ripple frequency is equal to the supply frequency (f). So, 50 Hz.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Ripple Frequency", "s": "Slide 57"}, {"q": "The ripple frequency of a full-wave rectifier supplied from a 50 Hz source is:", "o": ["25 Hz", "50 Hz", "100 Hz", "150 Hz"], "a": 2, "e": "For a full-wave rectifier, the ripple frequency is twice the supply frequency (2f). So, 2 * 50 = 100 Hz.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Ripple Frequency", "s": "Slide 57"}, {"q": "Which rectifier requires a smaller filter capacitor to obtain smooth DC?", "o": ["Half-wave rectifier", "Full-wave rectifier", "Both require the same size", "None of them use capacitors"], "a": 1, "e": "A full-wave rectifier has a higher ripple frequency (2f), making filtering easier and requiring a smaller capacitor.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Rectifier Filtering", "s": "Slide 64"}, {"q": "How many diodes does a full-wave bridge rectifier use?", "o": ["1", "2", "3", "4"], "a": 3, "e": "A full-wave bridge rectifier uses 4 diodes, though only 2 conduct at a time.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Bridge Rectifier", "s": "Slide 56"}, {"q": "What is the Ripple Factor of a half-wave rectifier?", "o": ["0.482", "1.21", "0.812", "0.406"], "a": 1, "e": "The ripple factor of a half-wave rectifier is 1.21.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Ripple Factor", "s": "Slide 56"}, {"q": "What is the Ripple Factor of a full-wave rectifier?", "o": ["1.21", "0.812", "0.482", "0.406"], "a": 2, "e": "The ripple factor of a full-wave rectifier is 0.482.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Ripple Factor", "s": "Slide 56"}, {"q": "Who invented the Transistor in 1947?", "o": ["Albert Einstein", "John Bardeen, Walter Brattain, William Shockley", "Thomas Edison and Nikola Tesla", "Georg Simon Ohm"], "a": 1, "e": "The transistor was developed by John Bardeen, Walter Brattain, and William Shockley at Bell Labs in 1947.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Transistor History", "s": "Slide 67"}, {"q": "In a Bipolar Junction Transistor (BJT), which region is heavily doped to inject a large number of charge carriers?", "o": ["Base", "Collector", "Emitter", "Substrate"], "a": 2, "e": "The Emitter is heavily doped to inject charge carriers.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "BJT Construction", "s": "Slide 71"}, {"q": "Which region of a BJT is very thin and lightly doped?", "o": ["Emitter", "Base", "Collector", "Gate"], "a": 1, "e": "The Base is very thin and lightly doped to allow most carriers to pass through to the collector.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "BJT Construction", "s": "Slide 71"}, {"q": "Which region of a BJT is physically the largest and moderately doped?", "o": ["Emitter", "Base", "Collector", "Source"], "a": 2, "e": "The Collector is moderately doped and is the largest region to collect carriers and dissipate heat.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "BJT Construction", "s": "Slide 71"}, {"q": "Which transistor configuration is mostly applied in practical amplifier circuits due to good voltage and power gain?", "o": ["Common Base", "Common Collector", "Common Emitter", "Common Gate"], "a": 2, "e": "Common Emitter configuration is mostly used as it provides good voltage, current, and power gain.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Transistor Configurations", "s": "Slide 72"}, {"q": "In the Common Emitter (CE) configuration, the output signal is ________ out of phase with the input signal.", "o": ["0 degree", "90 degree", "180 degree", "360 degree"], "a": 2, "e": "The output signal in a CE amplifier is 180 degrees out of phase with the input signal.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Common Emitter", "s": "Slide 74"}, {"q": "When a transistor operates as an 'Open Switch' (OFF state), in which region is it operating?", "o": ["Active region", "Saturation region", "Cut-off region", "Reverse-Active region"], "a": 2, "e": "In the cut-off region, base and collector currents are approx zero, and it acts as an open switch (OFF).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Transistor as a Switch", "s": "Slide 80"}, {"q": "When a transistor operates as a 'Closed Switch' (ON state), in which region is it operating?", "o": ["Saturation region", "Active region", "Cut-off region", "Linear region"], "a": 0, "e": "In the saturation region, the transistor conducts maximum current and acts as a closed switch (ON).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Transistor as a Switch", "s": "Slide 80"}, {"q": "To operate a transistor as an Amplifier, it must be operated in the:", "o": ["Cut-off region", "Saturation region", "Active region", "Breakdown region"], "a": 2, "e": "The Active region is the area where the transistor operates as an amplifier.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Transistor as Amplifier", "s": "Slide 78"}, {"q": "What is the relationship between Emitter current (Ie), Collector current (Ic), and Base current (Ib)?", "o": ["Ie = Ic - Ib", "Ie = Ib - Ic", "Ie = Ic + Ib", "Ic = Ie + Ib"], "a": 2, "e": "By Kirchhoff's current law for a transistor, Ie = Ic + Ib.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Transistor Currents", "s": "Slide 87"}, {"q": "The current gain factor Alpha (\u03b1) is the ratio of:", "o": ["Ic to Ib", "Ic to Ie", "Ie to Ib", "Ib to Ic"], "a": 1, "e": "Alpha (\u03b1) = Ic / Ie. Its value is usually very close to 1 (0.99).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Current Gain", "s": "Slide 87"}, {"q": "The current gain factor Beta (\u03b2) is the ratio of:", "o": ["Ic to Ie", "Ie to Ib", "Ic to Ib", "Ie to Ic"], "a": 2, "e": "Beta (\u03b2) = Ic / Ib. Its value is usually in the range of 50 to 400.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Current Gain", "s": "Slide 87"}, {"q": "How is alpha (\u03b1) related to beta (\u03b2)?", "o": ["\u03b1 = \u03b2 / (\u03b2 + 1)", "\u03b1 = \u03b2 - 1", "\u03b1 = \u03b2 + 1", "\u03b1 = 1 / \u03b2"], "a": 0, "e": "The relationship is \u03b1 = \u03b2 / (\u03b2 + 1).", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Current Gain", "s": "Slide 87"}, {"q": "When testing a good transistor with an ohmmeter, a normal PN junction should show:", "o": ["High resistance in both directions", "Low resistance in both directions", "Low resistance one way, High resistance the other way", "Zero resistance in both directions"], "a": 2, "e": "A good transistor conducts in one direction only across each PN junction (Low one way, High the other).", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Transistor Testing", "s": "Slide 94"}, {"q": "If an ohmmeter shows low resistance in both directions across a transistor junction, the transistor is:", "o": ["Good", "Open", "Shorted (Defective)", "Operating in active region"], "a": 2, "e": "Low resistance in both directions indicates a shorted, defective junction.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Transistor Testing", "s": "Slide 94"}, {"q": "Drude and Lorentz developed the free electron theory to explain:", "o": ["Magnetic properties of insulators", "Properties of solid materials like electrical and thermal conductivity", "The structure of the atom", "The exact mass of an electron"], "a": 1, "e": "The free electron theory was developed to explain the properties of solid materials like electrical and thermal conductivity.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Free Electron Theory", "s": "Slide 2"}, {"q": "A valence electron is found in the:", "o": ["Nucleus", "Innermost shell", "Outer shell", "Core of the atom"], "a": 2, "e": "A valence electron is an outer shell electron, and the rest are known as core electrons.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Free Electron Theory", "s": "Slide 3"}, {"q": "In the free electron theory, moving free electrons obey the laws of:", "o": ["Quantum mechanics", "Classical kinetic gas theory", "General relativity", "String theory"], "a": 1, "e": "Moving free electrons obey the laws of the classical kinetic gas theory.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Free Electron Theory", "s": "Slide 4"}, {"q": "Which statistics do free electrons in a metal obey according to the classical free electron theory?", "o": ["Fermi-Dirac Statistics", "Bose-Einstein Statistics", "Classical Maxwell-Boltzmann Statistics", "Newtonian Statistics"], "a": 2, "e": "In classical free electron theory, free electrons in a metal obey the classical Maxwell-Boltzmann Statistics.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Free Electron Theory", "s": "Slide 4"}, {"q": "Diffusion current in a PN junction occurs without:", "o": ["Electrons", "Holes", "Biasing current", "Concentration gradient"], "a": 2, "e": "Without biasing current in a PN junction, the current that flows due to concentration gradient is the diffusion current.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Diffusion Current", "s": "Slide 5"}, {"q": "The formula for electrical conductivity (\u03c3) in terms of mobility (\u03bc) and charge concentration (n) is:", "o": ["\u03c3 = nq\u03bc", "\u03c3 = n / (q\u03bc)", "\u03c3 = q\u03bc / n", "\u03c3 = nq / \u03bc"], "a": 0, "e": "Conductivity \u03c3 = nq\u03bc (or ne\u03bc), where n is carrier concentration, q/e is unit charge, and \u03bc is mobility.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Conductivity", "s": "Slide 36"}, {"q": "The unit of Hall coefficient (RH) in SI system is:", "o": ["m^2/V.s", "m^3/C", "Ohm-meter", "Ampere/m^2"], "a": 1, "e": "The SI unit of Hall coefficient (RH) is m\u00b3/C.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Hall Effect", "s": "Slide 35"}, {"q": "Which law establishes a relationship between electric and thermal conductivity that the free electron theory successfully explained?", "o": ["Ohm's Law", "Faraday's Law", "Wiedemann-Franz law", "Ampere's Law"], "a": 2, "e": "Wiedemann-Franz law is the relationship between electric and thermal conductivity.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Free Electron Theory Success", "s": "Slide 15"}, {"q": "According to the Free Electron Theory, which metals are found to be good conductors?", "o": ["Divalent metals", "Trivalent metals", "Monovalent metals like Cu, Ag, Au", "No metals"], "a": 2, "e": "Monovalent metals (Cu, Ag, Au) are good conductors, while the theory wrongly predicted divalent/trivalent metals should be better.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Free Electron Theory Failure", "s": "Slide 16"}, {"q": "Band theory explains that the gap between the conduction band and the valence band determines if a material is a conductor, semiconductor, or insulator. Which has overlapping bands?", "o": ["Insulator", "Semiconductor", "Conductor", "Dielectric"], "a": 2, "e": "In conductors, the conduction and valence bands overlap, meaning Eg = 0.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Band Theory", "s": "Slide 19"}, {"q": "Which of the following is an example of an intrinsic semiconductor?", "o": ["Silicon doped with Phosphorus", "Pure Silicon without doping", "Germanium doped with Boron", "Gallium Arsenide"], "a": 1, "e": "Intrinsic means pure semiconductor without any doping.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Semiconductors", "s": "Slide 21"}, {"q": "When a covalent bond breaks in an intrinsic semiconductor, what is produced?", "o": ["Only a free electron", "Only a hole", "An electron and a hole", "A proton"], "a": 2, "e": "When a bond breaks, an electron and a hole are produced.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Intrinsic Semiconductor", "s": "Slide 22"}, {"q": "In an N-type semiconductor, what are the impurities known as?", "o": ["Acceptor impurities", "Donor impurities", "Intrinsic impurities", "Trivalent impurities"], "a": 1, "e": "Pentavalent impurities donate an electron and are known as donor impurities.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Extrinsic Semiconductor", "s": "Slide 26"}, {"q": "In a P-type semiconductor, the trivalent impurities are known as:", "o": ["Donor impurities", "Acceptor impurities", "Pentavalent impurities", "Neutral impurities"], "a": 1, "e": "Trivalent impurities create a hole (accepts an electron) and are known as acceptor impurities.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Extrinsic Semiconductor", "s": "Slide 26"}, {"q": "In direct band gap materials, the minimum of the conduction band and maximum of the valence band lie at:", "o": ["Different momentum (k) values", "The same momentum (k) values", "Zero energy", "Infinite momentum"], "a": 1, "e": "For a direct-band gap material, the minimum of the CB and maximum of the VB lie at the same momentum (k) values.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Direct Band Gap", "s": "Slide 27"}, {"q": "In an indirect band gap material, the minimum of the CB and maximum of the VB lie at:", "o": ["The same momentum (k) values", "Different momentum (k) values", "Zero momentum", "The same energy level"], "a": 1, "e": "For an indirect-band gap material, the minimum of the CB and maximum of the VB lie at different k-values.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Indirect Band Gap", "s": "Slide 28"}, {"q": "Transitions in a direct band gap semiconductor that emit a photon are called:", "o": ["Non-radiative transitions", "Radiative transitions", "Phonon transitions", "Auger transitions"], "a": 1, "e": "Energy is conserved by emitting a photon; such transitions are called radiative transitions.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Direct Band Gap", "s": "Slide 27"}, {"q": "What produces vibrational waves inside the crystal structure (phonons)?", "o": ["Electrons moving in a vacuum", "Atoms vibrating about their mean position at a finite temperature", "Photons striking the surface", "Magnetic fields"], "a": 1, "e": "Atoms vibrating about their mean position at a finite temperature produce vibrational waves (phonons).", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Indirect Band Gap", "s": "Slide 28"}, {"q": "Resistance (R) of a material depends on its resistivity (\u03c1), length (l), and cross-sectional area (A) by the formula:", "o": ["R = \u03c1 * A / l", "R = \u03c1 * l / A", "R = A * l / \u03c1", "R = \u03c1 / (l * A)"], "a": 1, "e": "Resistance R = \u03c1 * (l / A).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Ohm's Law", "s": "Slide 2"}, {"q": "In Kirchhoff's Current Law, what is the sign convention for currents leaving a node?", "o": ["Taken as positive (+ve)", "Taken as negative (-ve)", "Taken as zero", "It alternates"], "a": 1, "e": "Entering current is taken as +ve, leaving current is taken as -ve.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "KCL", "s": "Slide 8"}, {"q": "In the PN Junction Diode symbol, the arrow indicates the direction of:", "o": ["Electron flow", "Conventional current flow", "Hole flow", "Both B and C"], "a": 3, "e": "The arrow indicates the direction of conventional current flow, which is the direction of hole flow (P to N).", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Diode Symbol", "s": "Slide 27"}, {"q": "When testing a PN junction, what happens to the resistance when it is forward biased?", "o": ["Resistance becomes infinite", "Resistance increases", "Resistance decreases", "Resistance becomes negative"], "a": 2, "e": "During forward bias, the effective resistance decreases to a very low value.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Forward Bias", "s": "Slide 28"}, {"q": "In an ideal diode model, the reverse resistance is:", "o": ["Zero", "100 Ohms", "1 Mega-Ohm", "Infinity"], "a": 3, "e": "An ideal diode has infinite reverse resistance (perfect insulator).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Ideal Diode", "s": "Slide 41"}, {"q": "Which diode model is most commonly used for hand calculations and includes the knee voltage?", "o": ["Ideal diode model", "Practical diode model", "Real diode model", "Exponential model"], "a": 1, "e": "The practical diode model includes the 0.7V forward voltage drop (knee voltage) and is most commonly used for hand calculations.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Diode Models", "s": "Slide 45"}, {"q": "What happens to a real diode before the forward voltage exceeds the barrier potential (e.g., 0.7V)?", "o": ["It conducts maximum current", "It acts as a perfect short circuit", "It conducts very little to no current", "It burns out"], "a": 2, "e": "The diode conducts significant current only after overcoming the barrier potential (knee voltage).", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Diode Characteristics", "s": "Slide 45"}, {"q": "The Transformer Utilization Factor (TUF) is better in which type of rectifier?", "o": ["Half-wave rectifier", "Full-wave center-tapped rectifier", "Full-wave bridge rectifier", "It is the same in all"], "a": 2, "e": "A full-wave bridge rectifier has a better transformer utilization factor.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Rectifiers", "s": "Slide 59"}, {"q": "The main disadvantage of a half-wave rectifier is:", "o": ["High efficiency", "High ripple", "Low Peak Inverse Voltage (PIV)", "Complexity"], "a": 1, "e": "The main disadvantage of a half-wave rectifier is its high ripple factor (1.21) and low efficiency.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Half-Wave Rectifier", "s": "Slide 60"}, {"q": "The output waveform of a full-wave rectifier contains:", "o": ["Only positive half cycles", "Only negative half cycles", "Both half cycles converted to positive", "An unchanged AC waveform"], "a": 2, "e": "A full-wave rectifier allows unidirectional current through the load during the entire 360 degrees of the input cycle.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Full-Wave Rectifier", "s": "Slide 60"}, {"q": "BJT stands for:", "o": ["Bipolar Junction Thyristor", "Bipolar Junction Transistor", "Bi-Junction Transducer", "Bilateral Junction Transistor"], "a": 1, "e": "BJT stands for Bipolar Junction Transistor.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Transistors", "s": "Slide 71"}, {"q": "The arrows in the schematic symbol of a BJT indicate the direction of:", "o": ["Electron flow", "Conventional current flow", "Magnetic field", "Physical movement of the transistor"], "a": 1, "e": "The arrow on the emitter shows the direction of conventional current flow.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Transistor Symbol", "s": "Slide 68"}, {"q": "In an NPN transistor, the arrow on the emitter points:", "o": ["Inwards towards the base", "Outwards away from the base", "Parallel to the collector", "There is no arrow"], "a": 1, "e": "In an NPN transistor, the arrow points Not Pointing iN (outwards).", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Transistor Symbol", "s": "Slide 68"}, {"q": "In a PNP transistor, the arrow on the emitter points:", "o": ["Inwards towards the base", "Outwards away from the base", "Towards the collector", "Both directions"], "a": 0, "e": "In a PNP transistor, the arrow points inwards (Points iN Proudly).", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Transistor Symbol", "s": "Slide 68"}, {"q": "Which region of the BJT acts as the control region that can allow carriers to flow?", "o": ["Emitter", "Base", "Collector", "Substrate"], "a": 1, "e": "The Base acts as the control region. It controls the carrier flow from emitter to collector.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "BJT Construction", "s": "Slide 68"}, {"q": "The Common Base (CB) configuration is not generally used as an amplifier because:", "o": ["Its voltage gain is zero", "Its current gain is approximately 1 (or slightly less)", "It has infinite power gain", "It is too expensive"], "a": 1, "e": "CB is not applicable as an amplifier because the current gain (alpha) is approx 1.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Transistor Configurations", "s": "Slide 72"}, {"q": "In the Common Emitter (CE) input characteristics, the graph is plotted between:", "o": ["Ic vs Vce", "Ib vs Vbe for constant Vce", "Ie vs Vcb", "Ic vs Ib"], "a": 1, "e": "Input characteristic is input current (IB) against input voltage (VBE) for several output voltages (VCE).", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "CE Configuration", "s": "Slide 76"}, {"q": "In the CE configuration output characteristics, the Saturation region is where:", "o": ["Ic is zero", "Ic increases drastically with small changes in Ib", "Ic increases linearly with Vce", "The transistor is burned out"], "a": 2, "e": "In the Saturation region, IC increases linearly with VCE.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "CE Characteristics", "s": "Slide 78"}, {"q": "For a silicon transistor to turn on, the base-emitter voltage (VBE) must be at least:", "o": ["0.3 V", "0.7 V", "1.0 V", "5.0 V"], "a": 1, "e": "The transistor turns on when VBE reaches approximately 0.7V for Silicon.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Transistor Operation", "s": "Slide 76"}, {"q": "Which junction is forward biased when a transistor is used as an amplifier (Active Region)?", "o": ["Collector-Base junction", "Emitter-Base junction", "Both junctions", "No junction"], "a": 1, "e": "For amplifier operation (Active region), the Emitter-Base junction is forward biased and Collector-Base is reverse biased.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Transistor Amplifier", "s": "Slide 82"}, {"q": "If a bipolar junction transistor has \u03b2 = 250 and base current IB = 10 \u00b5A, what is the collector current IC?", "o": ["2.5 mA", "10 mA", "25 \u00b5A", "250 mA"], "a": 0, "e": "IC = \u03b2 * IB = 250 * 10 \u00b5A = 2500 \u00b5A = 2.5 mA.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Current Gain Calculations", "s": "Slide 89"}, {"q": "If Ie = 1.6 mA, Ic = 1.5 mA, and Ib = 0.1 mA, what is the value of current gain (\u03b1)?", "o": ["0.31", "3.1", "0.937", "0.8"], "a": 2, "e": "\u03b1 = Ic / Ie = 1.5 / 1.6 = 0.9375 \u2248 0.937.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Current Gain Calculations", "s": "Slide 90"}, {"q": "In diode testing using an ohmmeter, if the reading is high resistance in both directions, the transistor is:", "o": ["Good", "Shorted", "Open (Defective)", "Perfectly conductive"], "a": 2, "e": "High resistance in both directions indicates an open junction, meaning the transistor is defective.", "p": "\ud83d\udfe0 HIGH PRIORITY", "t": "Transistor Testing", "s": "Slide 94"}, {"q": "A simple mnemonic for the doping concentration in a BJT (Emitter \u2192 Base \u2192 Collector) is:", "o": ["Light-Medium-Heavy", "Heavy-Light-Medium (HLM)", "Medium-Heavy-Light", "Heavy-Heavy-Light"], "a": 1, "e": "Heavy (Emitter) - Light (Base) - Medium (Collector) -> HLM.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "BJT Construction", "s": "Slide 71"}, {"q": "Which of the following is NOT an application of a diode?", "o": ["Switch", "Rectifier", "Clipper and Clamper", "Microprocessor"], "a": 3, "e": "While diodes are used in logic gates, a microprocessor is a complex IC composed of transistors (CMOS), not simply an application of a single diode.", "p": "\ud83d\udfe1 MEDIUM PRIORITY", "t": "Diode Applications", "s": "Slide 46"}, {"q": "In a half-wave rectifier, if the peak input voltage is Vm, the average DC output voltage is:", "o": ["Vm / \u03c0", "2Vm / \u03c0", "Vm / 2", "Vm / \u221a2"], "a": 0, "e": "For a half-wave rectifier, Average DC Output = Vm / \u03c0.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Half-Wave Rectifier", "s": "Slide 65"}, {"q": "In a full-wave rectifier, if the peak input voltage is Vm, the average DC output voltage is:", "o": ["Vm / \u03c0", "2Vm / \u03c0", "Vm / 2", "Vm / \u221a2"], "a": 1, "e": "For a full-wave rectifier, Average DC Output = 2Vm / \u03c0.", "p": "\ud83d\udd34 VERY HIGH PRIORITY", "t": "Full-Wave Rectifier", "s": "Slide 65"}];
-        let filteredMcqs = [...mcqs];
-        let currentIndex = 0;
+  <p id="statusMsg"></p>
 
-        // Populate topics
-        const topics = [...new Set(mcqs.map(q => q.t))].sort();
-        const topicSelect = document.getElementById('topicFilter');
-        topics.forEach(t => {
-            let opt = document.createElement('option');
-            opt.value = t;
-            opt.textContent = t;
-            topicSelect.appendChild(opt);
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwA_gH50T9LzR1pNwAtVv_Aox3fmC33B1GVcNOjXZHfglTD4OUShx8k8cZIBKixNejHjg/exec";
+
+    // গুগল শিট থেকে কেমিক্যালের লিস্ট এনে ড্রপডাউনে বসানো
+    window.addEventListener('DOMContentLoaded', () => {
+      fetch(API_URL)
+        .then(res => res.json())
+        .then(items => {
+          const select = document.getElementById('itemSelect');
+          select.innerHTML = '<option value="">-- আইটেম বেছে নিন --</option>';
+          items.forEach(itemName => {
+            const option = document.createElement('option');
+            option.value = itemName;
+            option.textContent = itemName;
+            select.appendChild(option);
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('itemSelect').innerHTML = '<option value="">আইটেম লোড করতে সমস্যা হয়েছে</option>';
         });
+    });
 
-        function getPriorityClass(p) {
-            if (p.includes('VERY HIGH')) return 'p-very-high';
-            if (p.includes('HIGH')) return 'p-high';
-            return 'p-medium';
-        }
+    // ফর্ম সাবমিট করা
+    document.getElementById('labForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const statusMsg = document.getElementById('statusMsg');
+      
+      submitBtn.disabled = true;
+      statusMsg.innerText = "প্রসেস হচ্ছে...";
 
-        function renderQuestion() {
-            const container = document.getElementById('mcqContainer');
-            container.innerHTML = '';
+      const formData = {
+        regNo: document.getElementById('regNo').value,
+        itemName: document.getElementById('itemSelect').value,
+        quantity: document.getElementById('quantity').value
+      };
 
-            if (filteredMcqs.length === 0) {
-                container.innerHTML = '<div class="mcq-card active" style="text-align:center;"><h3>No questions found matching your criteria.</h3></div>';
-                document.getElementById('progressText').textContent = '0 of 0';
-                document.getElementById('progressFill').style.width = '0%';
-                document.getElementById('prevBtn').disabled = true;
-                document.getElementById('nextBtn').disabled = true;
-                return;
-            }
+      fetch(API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(() => {
+        statusMsg.style.color = "green";
+        statusMsg.innerText = "সফলভাবে সাবমিট হয়েছে!";
+        document.getElementById('labForm').reset();
+        submitBtn.disabled = false;
+      })
+      .catch(err => {
+        statusMsg.style.color = "red";
+        statusMsg.innerText = "সাবমিট করতে সমস্যা হয়েছে।";
+        submitBtn.disabled = false;
+      });
+    });
+  </script>
 
-            const q = filteredMcqs[currentIndex];
-            const realIndex = currentIndex + 1;
-            const total = filteredMcqs.length;
-
-            document.getElementById('progressText').textContent = `Question ${realIndex} of ${total}`;
-            document.getElementById('progressFill').style.width = `${(realIndex / total) * 100}%`;
-            
-            document.getElementById('prevBtn').disabled = currentIndex === 0;
-            document.getElementById('nextBtn').disabled = currentIndex === total - 1;
-
-            const card = document.createElement('div');
-            card.className = 'mcq-card active';
-            
-            let optionsHtml = '';
-            q.o.forEach((opt, idx) => {
-                optionsHtml += `<div class="option" onclick="selectOption(this, ${idx}, ${q.a})">
-                    <span style="font-weight:bold; margin-right:10px;">${String.fromCharCode(65 + idx)}.</span> ${opt}
-                </div>`;
-            });
-
-            card.innerHTML = `
-                <div class="card-header">
-                    <span class="topic-badge">${q.t}</span>
-                    <span class="priority-badge ${getPriorityClass(q.p)}">${q.p}</span>
-                </div>
-                <div class="question-text">${realIndex}. ${q.q}</div>
-                <div class="options" id="options-${currentIndex}">
-                    ${optionsHtml}
-                </div>
-                <button class="btn btn-outline" onclick="toggleAnswer(${currentIndex})" id="showBtn-${currentIndex}">Show Answer</button>
-                
-                <div class="answer-section" id="ans-${currentIndex}">
-                    <div class="correct-answer-text">Correct Answer: ${String.fromCharCode(65 + q.a)}) ${q.o[q.a]}</div>
-                    <div class="explanation"><strong>Explanation:</strong> ${q.e}</div>
-                    <div class="source"><strong>Source:</strong> ${q.s}</div>
-                </div>
-            `;
-            container.appendChild(card);
-        }
-
-        window.selectOption = function(el, selectedIdx, correctIdx) {
-            const options = el.parentElement.children;
-            for(let i=0; i<options.length; i++) {
-                options[i].classList.remove('selected', 'correct', 'incorrect');
-                options[i].style.pointerEvents = 'none'; // lock after answering
-            }
-            
-            if (selectedIdx === correctIdx) {
-                el.classList.add('correct');
-            } else {
-                el.classList.add('incorrect');
-                options[correctIdx].classList.add('correct');
-            }
-            
-            // Auto show answer
-            const ansSection = document.getElementById(`ans-${currentIndex}`);
-            const btn = document.getElementById(`showBtn-${currentIndex}`);
-            if(!ansSection.classList.contains('visible')) {
-                ansSection.classList.add('visible');
-                btn.textContent = 'Hide Answer';
-            }
-        }
-
-        window.toggleAnswer = function(idx) {
-            const ansSection = document.getElementById(`ans-${idx}`);
-            const btn = document.getElementById(`showBtn-${idx}`);
-            if (ansSection.classList.contains('visible')) {
-                ansSection.classList.remove('visible');
-                btn.textContent = 'Show Answer';
-            } else {
-                ansSection.classList.add('visible');
-                btn.textContent = 'Hide Answer';
-            }
-        }
-
-        window.prevQuestion = function() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                renderQuestion();
-            }
-        }
-
-        window.nextQuestion = function() {
-            if (currentIndex < filteredMcqs.length - 1) {
-                currentIndex++;
-                renderQuestion();
-            }
-        }
-
-        function applyFilters() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const topic = document.getElementById('topicFilter').value;
-            const priority = document.getElementById('priorityFilter').value;
-
-            filteredMcqs = mcqs.filter(q => {
-                const matchSearch = q.q.toLowerCase().includes(term) || q.o.some(opt => opt.toLowerCase().includes(term));
-                const matchTopic = topic === 'all' || q.t === topic;
-                const matchPriority = priority === 'all' || q.p === priority;
-                return matchSearch && matchTopic && matchPriority;
-            });
-            
-            currentIndex = 0;
-            renderQuestion();
-            document.getElementById('stats').textContent = `Showing ${filteredMcqs.length} of ${mcqs.length} MCQs`;
-        }
-
-        document.getElementById('searchInput').addEventListener('input', applyFilters);
-        document.getElementById('topicFilter').addEventListener('change', applyFilters);
-        document.getElementById('priorityFilter').addEventListener('change', applyFilters);
-
-        // Init
-        document.getElementById('stats').textContent = `Total MCQs: ${mcqs.length}`;
-        renderQuestion();
-    </script>
 </body>
 </html>
