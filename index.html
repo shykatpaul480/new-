@@ -21,59 +21,24 @@
       <p id="searchStatus" class="text-center text-sm font-medium hidden"></p>
     </div>
 
-    <!-- Order Details & Verification Section -->
-    <div id="orderDetailsSection" class="hidden mt-6 space-y-4 border-t pt-4">
-      <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-2">
-        <h3 class="text-md font-bold text-orange-600">Current Order Details</h3>
-        <p class="text-sm"><strong>Order ID:</strong> <span id="dispOrderId"></span></p>
-        <p class="text-sm"><strong>Reg No:</strong> <span id="dispRegNo"></span></p>
-        <p class="text-sm"><strong>Student Name:</strong> <span id="dispName"></span></p>
-        <p class="text-sm"><strong>Group:</strong> <span id="dispGroup"></span></p>
-        <p class="text-sm"><strong>Item Selected:</strong> <span id="dispItem" class="font-bold"></span></p>
-        <p class="text-sm"><strong>Quantity:</strong> <span id="dispQuantity" class="font-bold"></span></p>
-        <p class="text-sm"><strong>Unit:</strong> <span id="dispUnit" class="font-bold text-orange-600"></span></p>
+    <!-- Multiple Orders Container -->
+    <div id="ordersContainer" class="hidden mt-6 space-y-6 border-t pt-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-bold text-orange-600" id="orderHeaderCount">Found Orders</h3>
+        <button onclick="resetSearch()" class="text-xs text-gray-500 hover:text-red-500 underline">🔍 New Search</button>
       </div>
-
-      <!-- Live WebRTC Camera Section -->
-      <div class="space-y-3">
-        <label class="block text-sm font-semibold text-gray-700">Live Verification Photo</label>
-        
-        <!-- Live Camera Stream -->
-        <video id="webcam" autoplay playsinline class="w-full h-56 bg-black rounded-lg hidden border object-cover"></video>
-        <canvas id="canvas" class="hidden"></canvas>
-        
-        <!-- Captured Image Preview -->
-        <div id="imagePreviewContainer" class="hidden mt-2 flex justify-center">
-          <img id="imagePreview" src="" class="max-h-52 rounded-lg border shadow-sm">
-        </div>
-
-        <!-- Camera Controls -->
-        <div class="flex gap-2">
-          <button id="startCamBtn" onclick="startCamera()" type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-md transition">
-            📷 Open Live Camera
-          </button>
-          <button id="captureBtn" onclick="takeSnapshot()" type="button" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-md hidden transition">
-            📸 Take Photo
-          </button>
-        </div>
-
-        <button id="confirmBtn" onclick="submitConfirmation()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-md mt-4 transition hidden">
-          Confirm Receive
-        </button>
-      </div>
-      <p id="uploadStatus" class="text-center text-sm font-medium hidden"></p>
+      
+      <!-- Dynamic Order Cards List will append here -->
+      <div id="orderCardsList" class="space-y-6"></div>
     </div>
   </div>
 
   <script>
-    // Updated Google Apps Script Web App URL
     const API_URL = "https://script.google.com/macros/s/AKfycbz0Ry_gVDYRuDPS1-kQkk3RjeloRlFvM3FyY7M-pIFIvCtXdXj-ym6CPud4F0XCZBnRZg/exec";
     
-    let currentOrder = null;
-    let base64Image = "";
-    let stream = null;
+    let activeStreams = {}; // একাধিক ক্যামেরার স্ট্রিম হ্যান্ডেল করার জন্য
 
-    // 1. Search Order
+    // 1. Search Orders
     function searchOrder() {
       const query = document.getElementById('searchQuery').value.trim();
       const status = document.getElementById('searchStatus');
@@ -84,86 +49,123 @@
       searchBtn.disabled = true;
       status.classList.remove('hidden');
       status.className = "text-center text-sm font-medium mt-2 text-orange-500";
-      status.innerText = "Searching order...";
+      status.innerText = "Searching orders...";
 
       fetch(`${API_URL}?action=searchOrder&query=${encodeURIComponent(query)}`)
         .then(res => res.json())
         .then(data => {
           searchBtn.disabled = false;
+          status.classList.add('hidden');
           if (data.result === "success" && data.orders.length > 0) {
-            status.classList.add('hidden');
-            currentOrder = data.orders[0]; 
-            showOrderDetails(currentOrder);
+            renderOrders(data.orders);
           } else {
             status.className = "text-center text-sm font-medium mt-2 text-red-600";
-            status.innerText = "No active order found or Access not granted!";
-            document.getElementById('orderDetailsSection').classList.add('hidden');
+            status.innerText = "No active orders found or Access not granted!";
+            document.getElementById('ordersContainer').classList.add('hidden');
           }
         })
         .catch(err => {
           searchBtn.disabled = false;
           status.className = "text-center text-sm font-medium mt-2 text-red-600";
-          status.innerText = "Error searching order.";
+          status.innerText = "Error searching orders.";
         });
     }
 
-    // 2. Display Order Details
-    function showOrderDetails(order) {
-      document.getElementById('dispOrderId').innerText = order.orderId;
-      document.getElementById('dispRegNo').innerText = order.regNo;
-      document.getElementById('dispName').innerText = order.name;
-      document.getElementById('dispGroup').innerText = order.group;
-      document.getElementById('dispItem').innerText = order.item;
-      document.getElementById('dispQuantity').innerText = order.quantity;
-      document.getElementById('dispUnit').innerText = order.unit || "N/A";
-      
-      // Reset camera view
-      base64Image = "";
-      document.getElementById('imagePreviewContainer').classList.add('hidden');
-      document.getElementById('confirmBtn').classList.add('hidden');
-      document.getElementById('startCamBtn').innerText = "📷 Open Live Camera";
-      document.getElementById('startCamBtn').classList.remove('hidden');
-      document.getElementById('captureBtn').classList.add('hidden');
-      
-      document.getElementById('orderDetailsSection').classList.remove('hidden');
+    // New Search Reset
+    function resetSearch() {
+      document.getElementById('ordersContainer').classList.add('hidden');
+      document.getElementById('searchQuery').value = "";
+      document.getElementById('searchSection').classList.remove('hidden');
     }
 
-    // 3. Start Live Camera Stream (WebRTC)
-    async function startCamera() {
+    // 2. Render Multiple Order Cards Dynamically
+    function renderOrders(orders) {
+      document.getElementById('searchSection').classList.add('hidden');
+      const container = document.getElementById('orderCardsList');
+      container.innerHTML = "";
+      
+      document.getElementById('orderHeaderCount').innerText = `Pending Orders (${orders.length})`;
+
+      orders.forEach((order, index) => {
+        const cardId = `orderCard_${index}`;
+        const cardHTML = `
+          <div id="${cardId}" class="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-3 shadow-sm">
+            <div class="border-b pb-2">
+              <span class="bg-orange-600 text-white text-xs px-2 py-0.5 rounded font-bold">Order #${index + 1}</span>
+              <p class="text-sm mt-1"><strong>Order ID:</strong> ${order.orderId}</p>
+              <p class="text-sm"><strong>Reg No:</strong> ${order.regNo} | <strong>Name:</strong> ${order.name}</p>
+              <p class="text-sm"><strong>Item:</strong> <span class="font-bold text-orange-700">${order.item}</span></p>
+              <p class="text-sm"><strong>Quantity:</strong> <span class="font-bold">${order.quantity} ${order.unit || ''}</span></p>
+            </div>
+
+            <!-- Camera Section for this specific order -->
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-gray-700">Live Verification Photo for this Item</label>
+              
+              <video id="webcam_${index}" autoplay playsinline class="w-full h-48 bg-black rounded-lg hidden border object-cover"></video>
+              <canvas id="canvas_${index}" class="hidden"></canvas>
+              
+              <div id="previewContainer_${index}" class="hidden flex justify-center">
+                <img id="imagePreview_${index}" src="" class="max-h-40 rounded-lg border shadow-sm">
+              </div>
+
+              <div class="flex gap-2">
+                <button id="startCamBtn_${index}" onclick="startCamera(${index})" type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2 rounded-md transition">
+                  📷 Open Camera
+                </button>
+                <button id="captureBtn_${index}" onclick="takeSnapshot(${index})" type="button" class="w-full bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold py-2 rounded-md hidden transition">
+                  📸 Take Photo
+                </button>
+              </div>
+
+              <button id="confirmBtn_${index}" onclick="submitConfirmation(${index}, ${JSON.stringify(order).replace(/"/g, '&quot;')})" class="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-2.5 rounded-md mt-2 transition hidden">
+                Confirm & Submit Receive
+              </button>
+            </div>
+            <p id="status_${index}" class="text-center text-xs font-medium hidden"></p>
+          </div>
+        `;
+        container.innerHTML += cardHTML;
+      });
+
+      document.getElementById('ordersContainer').classList.remove('hidden');
+    }
+
+    // 3. Start Camera for Specific Index
+    async function startCamera(index) {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
+        activeStreams[index] = await navigator.mediaDevices.getUserMedia({ 
           video: { facingMode: { exact: "environment" } } 
         });
       } catch (err) {
         try {
-          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+          activeStreams[index] = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
         } catch (fallbackErr) {
-          stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          activeStreams[index] = await navigator.mediaDevices.getUserMedia({ video: true });
         }
       }
 
-      const video = document.getElementById('webcam');
-      video.srcObject = stream;
+      const video = document.getElementById(`webcam_${index}`);
+      video.srcObject = activeStreams[index];
       video.classList.remove('hidden');
-      document.getElementById('imagePreviewContainer').classList.add('hidden');
+      document.getElementById(`previewContainer_${index}`).classList.add('hidden');
       
-      document.getElementById('startCamBtn').classList.add('hidden');
-      document.getElementById('captureBtn').classList.remove('hidden');
+      document.getElementById(`startCamBtn_${index}`).classList.add('hidden');
+      document.getElementById(`captureBtn_${index}`).classList.remove('hidden');
     }
 
-    // 4. Take Live Snapshot & Add Watermark
-    function takeSnapshot() {
-      const video = document.getElementById('webcam');
-      const canvas = document.getElementById('canvas');
+    // 4. Take Snapshot & Watermark for Specific Index
+    let base64Images = {};
+    function takeSnapshot(index) {
+      const video = document.getElementById(`webcam_${index}`);
+      const canvas = document.getElementById(`canvas_${index}`);
       const context = canvas.getContext('2d');
 
       canvas.width = video.videoWidth || 640;
       canvas.height = video.videoHeight || 480;
 
-      // Frame draw on canvas
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // Watermark Text Overlay
       const now = new Date();
       const timeString = "Verified: " + now.toLocaleString();
       
@@ -174,25 +176,22 @@
       context.fillStyle = "#ffffff";
       context.fillText(timeString, 20, canvas.height - 18);
 
-      // Base64 conversion
-      base64Image = canvas.toDataURL('image/jpeg', 0.85);
+      base64Images[index] = canvas.toDataURL('image/jpeg', 0.85);
 
-      // Preview Display
-      document.getElementById('imagePreview').src = base64Image;
-      document.getElementById('imagePreviewContainer').classList.remove('hidden');
+      document.getElementById(`imagePreview_${index}`).src = base64Images[index];
+      document.getElementById(`previewContainer_${index}`).classList.remove('hidden');
 
-      // Stop camera stream
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+      if (activeStreams[index]) {
+        activeStreams[index].getTracks().forEach(track => track.stop());
       }
       video.classList.add('hidden');
-      document.getElementById('captureBtn').classList.add('hidden');
-      document.getElementById('startCamBtn').innerText = "🔄 Retake Photo";
-      document.getElementById('startCamBtn').classList.remove('hidden');
-      document.getElementById('confirmBtn').classList.remove('hidden');
+      document.getElementById(`captureBtn_${index}`).classList.add('hidden');
+      document.getElementById(`startCamBtn_${index}`).innerText = "🔄 Retake";
+      document.getElementById(`startCamBtn_${index}`).classList.remove('hidden');
+      document.getElementById(`confirmBtn_${index}`).classList.remove('hidden');
     }
 
-    // 5. Gather Device Metadata & Browser Fingerprint
+    // 5. Metadata Generator
     async function getDeviceMetadata() {
       const userAgent = navigator.userAgent;
       const screenRes = `${window.screen.width}x${window.screen.height}`;
@@ -213,34 +212,34 @@
       };
     }
 
-    // 6. Submit Confirmation with Security Payload
-    async function submitConfirmation() {
-      if (!base64Image) {
+    // 6. Submit Specific Order Confirmation
+    async function submitConfirmation(index, order) {
+      if (!base64Images[index]) {
         alert("Please capture a live photo first!");
         return;
       }
 
-      const confirmBtn = document.getElementById('confirmBtn');
-      const status = document.getElementById('uploadStatus');
+      const confirmBtn = document.getElementById(`confirmBtn_${index}`);
+      const status = document.getElementById(`status_${index}`);
 
       confirmBtn.disabled = true;
       confirmBtn.innerText = "Processing...";
       status.classList.remove('hidden');
-      status.className = "text-center text-sm font-medium mt-2 text-orange-500";
-      status.innerText = "Processing & verifying image...";
+      status.className = "text-center text-xs font-medium mt-2 text-orange-500";
+      status.innerText = "Submitting verification...";
 
       const metadata = await getDeviceMetadata();
 
       const payload = {
-        rowIndex: currentOrder.rowIndex,
-        orderId: currentOrder.orderId,
-        regNo: currentOrder.regNo,
-        name: currentOrder.name,
-        group: currentOrder.group,
-        item: currentOrder.item,
-        quantity: currentOrder.quantity,
-        unit: currentOrder.unit,
-        imageBase64: base64Image,
+        rowIndex: order.rowIndex,
+        orderId: order.orderId,
+        regNo: order.regNo,
+        name: order.name,
+        group: order.group,
+        item: order.item,
+        quantity: order.quantity,
+        unit: order.unit,
+        imageBase64: base64Images[index],
         deviceModel: metadata.deviceInfo,
         screenSize: metadata.screenSize,
         fingerprint: metadata.fingerprint
@@ -254,21 +253,24 @@
       .then(res => res.json())
       .then(data => {
         if (data.result === "success") {
-          status.className = "text-center text-sm font-medium mt-2 text-green-600";
-          status.innerText = "Order confirmed successfully!";
-          setTimeout(() => { location.reload(); }, 2000);
+          status.className = "text-center text-xs font-medium mt-2 text-green-600";
+          status.innerText = "Confirmed successfully!";
+          // Disable card elements after success
+          document.getElementById(`orderCard_${index}`).style.opacity = "0.6";
+          confirmBtn.remove();
+          document.getElementById(`startCamBtn_${index}`).remove();
         } else {
-          status.className = "text-center text-sm font-medium mt-2 text-red-600";
-          status.innerText = "Failed: " + (data.error || "Please try again.");
+          status.className = "text-center text-xs font-medium mt-2 text-red-600";
+          status.innerText = "Failed: " + (data.error || "Try again.");
           confirmBtn.disabled = false;
-          confirmBtn.innerText = "Confirm Receive";
+          confirmBtn.innerText = "Confirm & Submit Receive";
         }
       })
       .catch(err => {
-        status.className = "text-center text-sm font-medium mt-2 text-red-600";
-        status.innerText = "Submission completed.";
+        status.className = "text-center text-xs font-medium mt-2 text-red-600";
+        status.innerText = "Error in submission.";
         confirmBtn.disabled = false;
-        confirmBtn.innerText = "Confirm Receive";
+        confirmBtn.innerText = "Confirm & Submit Receive";
       });
     }
   </script>
