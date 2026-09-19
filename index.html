@@ -1,42 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab Requisition Confirmation</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-
-  <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-lg border-t-4 border-orange-500">
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Lab Requisition Confirmation</h2>
-
-    <!-- Search Section -->
-    <div id="searchSection" class="space-y-4">
-      <label class="block text-sm font-semibold text-gray-700">Registration Number or Order ID</label>
-      <div class="flex gap-2">
-        <input type="text" id="searchQuery" placeholder="Enter Reg No / Order ID..." class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 outline-none">
-        <button id="searchBtn" onclick="searchOrder()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2 rounded-md transition">Search</button>
-      </div>
-      <p id="searchStatus" class="text-center text-sm font-medium hidden"></p>
-    </div>
-
-    <!-- Multiple Orders Container -->
-    <div id="ordersContainer" class="hidden mt-6 space-y-6 border-t pt-4">
-      <div class="flex justify-between items-center">
-        <h3 class="text-md font-bold text-orange-600" id="orderHeaderCount">Found Orders</h3>
-        <button onclick="resetSearch()" class="text-xs text-gray-500 hover:text-red-500 underline">🔍 New Search</button>
-      </div>
-      
-      <!-- Dynamic Order Cards List will append here -->
-      <div id="orderCardsList" class="space-y-6"></div>
-    </div>
-  </div>
-
-  <script>
+<script>
     const API_URL = "https://script.google.com/macros/s/AKfycbz0Ry_gVDYRuDPS1-kQkk3RjeloRlFvM3FyY7M-pIFIvCtXdXj-ym6CPud4F0XCZBnRZg/exec";
     
-    let activeStreams = {}; // একাধিক ক্যামেরার স্ট্রিম হ্যান্ডেল করার জন্য
+    let activeStream = null; // গ্লোবালি একটি মাত্র স্ট্রিম ট্র্যাক করার জন্য
+    let activeIndex = null;  // বর্তমানে কোন কার্ডের ক্যামেরা ওপেন আছে
+    let base64Images = {};
 
     // 1. Search Orders
     function searchOrder() {
@@ -71,14 +38,26 @@
         });
     }
 
-    // New Search Reset
     function resetSearch() {
+      stopActiveCamera();
       document.getElementById('ordersContainer').classList.add('hidden');
       document.getElementById('searchQuery').value = "";
       document.getElementById('searchSection').classList.remove('hidden');
     }
 
-    // 2. Render Multiple Order Cards Dynamically
+    // Stop active camera helper
+    function stopActiveCamera() {
+      if (activeStream) {
+        activeStream.getTracks().forEach(track => track.stop());
+        activeStream = null;
+      }
+      if (activeIndex !== null) {
+        const prevVideo = document.getElementById(`webcam_${activeIndex}`);
+        if (prevVideo) prevVideo.classList.add('hidden');
+      }
+    }
+
+    // 2. Render Multiple Order Cards
     function renderOrders(orders) {
       document.getElementById('searchSection').classList.add('hidden');
       const container = document.getElementById('orderCardsList');
@@ -98,7 +77,6 @@
               <p class="text-sm"><strong>Quantity:</strong> <span class="font-bold">${order.quantity} ${order.unit || ''}</span></p>
             </div>
 
-            <!-- Camera Section for this specific order -->
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-gray-700">Live Verification Photo for this Item</label>
               
@@ -131,22 +109,26 @@
       document.getElementById('ordersContainer').classList.remove('hidden');
     }
 
-    // 3. Start Camera for Specific Index
+    // 3. Start Camera (Ensuring previous camera is safely closed)
     async function startCamera(index) {
+      // যদি অন্য কোনো ক্যামেরা ওপেন থাকে তা আগে বন্ধ করুন
+      stopActiveCamera();
+      activeIndex = index;
+
       try {
-        activeStreams[index] = await navigator.mediaDevices.getUserMedia({ 
+        activeStream = await navigator.mediaDevices.getUserMedia({ 
           video: { facingMode: { exact: "environment" } } 
         });
       } catch (err) {
         try {
-          activeStreams[index] = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+          activeStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
         } catch (fallbackErr) {
-          activeStreams[index] = await navigator.mediaDevices.getUserMedia({ video: true });
+          activeStream = await navigator.mediaDevices.getUserMedia({ video: true });
         }
       }
 
       const video = document.getElementById(`webcam_${index}`);
-      video.srcObject = activeStreams[index];
+      video.srcObject = activeStream;
       video.classList.remove('hidden');
       document.getElementById(`previewContainer_${index}`).classList.add('hidden');
       
@@ -154,8 +136,7 @@
       document.getElementById(`captureBtn_${index}`).classList.remove('hidden');
     }
 
-    // 4. Take Snapshot & Watermark for Specific Index
-    let base64Images = {};
+    // 4. Take Snapshot
     function takeSnapshot(index) {
       const video = document.getElementById(`webcam_${index}`);
       const canvas = document.getElementById(`canvas_${index}`);
@@ -181,9 +162,9 @@
       document.getElementById(`imagePreview_${index}`).src = base64Images[index];
       document.getElementById(`previewContainer_${index}`).classList.remove('hidden');
 
-      if (activeStreams[index]) {
-        activeStreams[index].getTracks().forEach(track => track.stop());
-      }
+      // Stop current stream
+      stopActiveCamera();
+
       video.classList.add('hidden');
       document.getElementById(`captureBtn_${index}`).classList.add('hidden');
       document.getElementById(`startCamBtn_${index}`).innerText = "🔄 Retake";
@@ -255,7 +236,6 @@
         if (data.result === "success") {
           status.className = "text-center text-xs font-medium mt-2 text-green-600";
           status.innerText = "Confirmed successfully!";
-          // Disable card elements after success
           document.getElementById(`orderCard_${index}`).style.opacity = "0.6";
           confirmBtn.remove();
           document.getElementById(`startCamBtn_${index}`).remove();
@@ -274,6 +254,3 @@
       });
     }
   </script>
-
-</body>
-</html>
