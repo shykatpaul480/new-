@@ -1,867 +1,277 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-50">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab Order Confirmation & Proof Receiver</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome Icons CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            orange: '#F26522',
-                            orangeHover: '#D95213',
-                            orangeLight: '#FFF4EE',
-                            black: '#1A1A1A',
-                            darkCard: '#242424',
-                            grayBorder: '#E5E7EB'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Custom animations & fine styling */
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.03); }
-        }
-        .animate-pulse-glow {
-            animation: pulseGlow 2s infinite ease-in-out;
-        }
-        
-        .scan-line {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #F26522, transparent);
-            position: absolute;
-            width: 100%;
-            top: 0;
-            animation: scan 2s linear infinite;
-        }
-        @keyframes scan {
-            0% { top: 0%; }
-            100% { top: 100%; }
-        }
-
-        /* Glassmorphism utility */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Requisition Confirmation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-full flex flex-col text-slate-800 antialiased font-sans">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <!-- TOP NAVIGATION HEADER -->
-    <header class="bg-brand-black text-white shadow-md border-b-4 border-brand-orange sticky top-0 z-30">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-brand-orange flex items-center justify-center text-white shadow-lg shadow-orange-900/30">
-                    <i class="fa-solid fa-vial-circle-check text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-extrabold tracking-tight text-white flex items-center gap-2">
-                        Lab Requisition Portal
-                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-brand-orange/20 text-brand-orange border border-brand-orange/40 hidden sm:inline-block">v2.4 Live</span>
-                    </h1>
-                    <p class="text-xs text-gray-400">Confirmation & Proof Receiver System</p>
-                </div>
-            </div>
+  <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-lg border-t-4 border-orange-500">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Lab Requisition Confirmation</h2>
 
-            <div class="flex items-center space-x-2 text-xs">
-                <span class="flex h-2.5 w-2.5 relative">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                </span>
-                <span class="text-emerald-400 font-medium hidden sm:inline">Database Connected</span>
-            </div>
-        </div>
-    </header>
+    <!-- Search Section -->
+    <div id="searchSection" class="space-y-4">
+      <label class="block text-sm font-semibold text-gray-700">Registration Number or Order ID</label>
+      <div class="flex gap-2">
+        <input type="text" id="searchQuery" placeholder="Enter Reg No / Order ID..." class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 outline-none">
+        <button id="searchBtn" onclick="searchOrder()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2 rounded-md transition">Search</button>
+      </div>
+      <p id="searchStatus" class="text-center text-sm font-medium hidden"></p>
+    </div>
 
-    <!-- MAIN CONTAINER -->
-    <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+    <!-- Order Details & Verification Section -->
+    <div id="orderDetailsSection" class="hidden mt-6 space-y-4 border-t pt-4">
+      <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-2">
+        <h3 class="text-md font-bold text-orange-600">Current Order Details</h3>
+        <p class="text-sm"><strong>Order ID:</strong> <span id="dispOrderId"></span></p>
+        <p class="text-sm"><strong>Reg No:</strong> <span id="dispRegNo"></span></p>
+        <p class="text-sm"><strong>Student Name:</strong> <span id="dispName"></span></p>
+        <p class="text-sm"><strong>Group:</strong> <span id="dispGroup"></span></p>
+        <p class="text-sm"><strong>Item Selected:</strong> <span id="dispItem" class="font-bold"></span></p>
+        <p class="text-sm"><strong>Quantity:</strong> <span id="dispQuantity" class="font-bold"></span></p>
+        <p class="text-sm"><strong>Unit:</strong> <span id="dispUnit" class="font-bold text-orange-600"></span></p>
+      </div>
 
-        <!-- SEARCH / QR DISPATCH CARD -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-7 relative overflow-hidden transition-all duration-300">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-base font-bold text-brand-black flex items-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass text-brand-orange"></i>
-                    Find Active Lab Order
-                </h2>
-                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
-                    Search by Reg No or Order ID
-                </span>
-            </div>
-
-            <!-- Search Input Form -->
-            <form id="searchForm" onsubmit="handleSearch(event)" class="space-y-3">
-                <div class="relative flex items-center">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-qrcode text-lg"></i>
-                    </div>
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        placeholder="e.g. 16239868 or ORD-8492" 
-                        class="w-full pl-11 pr-24 py-3.5 bg-slate-50 text-slate-800 text-sm font-semibold rounded-xl border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange transition-all placeholder:font-normal placeholder:text-slate-400"
-                        required
-                    >
-                    <div class="absolute right-2 flex items-center gap-1">
-                        <button 
-                            type="button" 
-                            id="clearSearchBtn" 
-                            onclick="clearSearch()" 
-                            class="hidden p-2 text-slate-400 hover:text-slate-600 rounded-lg text-xs"
-                            title="Clear search"
-                        >
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                        <button 
-                            type="submit" 
-                            id="searchBtn" 
-                            class="bg-brand-orange hover:bg-brand-orangeHover text-white font-semibold text-xs px-4 py-2.5 rounded-lg shadow-md transition-all flex items-center gap-1.5 active:scale-95"
-                        >
-                            <span id="searchBtnText">Search</span>
-                            <i id="searchBtnIcon" class="fa-solid fa-arrow-right"></i>
-                            <i id="searchSpinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <!-- URL Parameter Detector Badge -->
-            <div id="urlQueryNotice" class="hidden mt-3 p-2.5 bg-brand-orangeLight border border-brand-orange/30 rounded-lg text-xs text-brand-black flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-bolt text-brand-orange"></i>
-                    <span>URL parameters detected! Auto-querying order details...</span>
-                </div>
-                <button onclick="dismissUrlNotice()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- LOADING SKELETON -->
-        <div id="loadingState" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-8 text-center space-y-4">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-orange-50 text-brand-orange">
-                <i class="fa-solid fa-microscope text-2xl animate-bounce"></i>
-            </div>
-            <div>
-                <h3 class="text-sm font-bold text-slate-800">Searching Google Spreadsheet...</h3>
-                <p class="text-xs text-slate-500 mt-1">Verifying approval status and order details in 'Order Entry' sheet</p>
-            </div>
-            <div class="w-48 h-1.5 bg-slate-100 rounded-full mx-auto overflow-hidden">
-                <div class="w-full h-full bg-brand-orange animate-pulse"></div>
-            </div>
+      <!-- Live WebRTC Camera Section -->
+      <div class="space-y-3">
+        <label class="block text-sm font-semibold text-gray-700">Live Verification Photo</label>
+        
+        <!-- Live Camera Stream -->
+        <video id="webcam" autoplay playsinline class="w-full h-56 bg-black rounded-lg hidden border object-cover"></video>
+        <canvas id="canvas" class="hidden"></canvas>
+        
+        <!-- Captured Image Preview -->
+        <div id="imagePreviewContainer" class="hidden mt-2 flex justify-center">
+          <img id="imagePreview" src="" class="max-h-52 rounded-lg border shadow-sm">
         </div>
 
-        <!-- ERROR / NOTICE ALERT BOX -->
-        <div id="alertBox" class="hidden p-4 rounded-2xl border text-sm flex items-start gap-3 shadow-sm transition-all">
-            <i id="alertIcon" class="fa-solid fa-circle-info text-lg mt-0.5"></i>
-            <div class="flex-1">
-                <h4 id="alertTitle" class="font-bold">Notice</h4>
-                <p id="alertMessage" class="text-xs mt-0.5 leading-relaxed"></p>
-            </div>
-            <button onclick="hideAlert()" class="text-slate-400 hover:text-slate-600 p-1">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+        <!-- Camera Controls -->
+        <div class="flex gap-2">
+          <button id="startCamBtn" onclick="startCamera()" type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-md transition">
+            📷 Open Live Camera
+          </button>
+          <button id="captureBtn" onclick="takeSnapshot()" type="button" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-md hidden transition">
+            📸 Take Photo
+          </button>
         </div>
 
-        <!-- MULTI-ORDER SELECTOR MODAL/SECTION (If multiple orders match) -->
-        <div id="multiOrderSection" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-            <div class="flex items-center justify-between border-b pb-3">
-                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-brand-orange"></i>
-                    Multiple Active Requisitions Found
-                </h3>
-                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium" id="orderCountBadge">0 Orders</span>
-            </div>
-            <p class="text-xs text-slate-500">Select which requisition item the student is receiving right now:</p>
-            <div id="multiOrderContainer" class="grid grid-cols-1 gap-3">
-                <!-- Injected via JS -->
-            </div>
-        </div>
+        <button id="confirmBtn" onclick="submitConfirmation()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-md mt-4 transition hidden">
+          Confirm Receive
+        </button>
+      </div>
+      <p id="uploadStatus" class="text-center text-sm font-medium hidden"></p>
+    </div>
+  </div>
 
-        <!-- ACTIVE ORDER DISPLAY CARD -->
-        <section id="activeOrderCard" class="hidden bg-white rounded-2xl shadow-md border border-slate-200/90 overflow-hidden transition-all duration-300">
-            
-            <!-- Card Header Bar -->
-            <div class="bg-brand-black text-white px-6 py-4 flex flex-wrap items-center justify-between gap-3 border-b-2 border-brand-orange">
-                <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-brand-orange">
-                        <i class="fa-solid fa-box-archive"></i>
-                    </div>
-                    <div>
-                        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Requisition Order</span>
-                        <div class="text-sm font-extrabold text-white flex items-center gap-2">
-                            <span id="dispOrderId">ORD-00000</span>
-                            <button onclick="copyOrderId()" title="Copy Order ID" class="text-xs text-slate-400 hover:text-brand-orange transition-colors">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+  <script>
+    // Updated Google Apps Script Web App URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbz0Ry_gVDYRuDPS1-kQkk3RjeloRlFvM3FyY7M-pIFIvCtXdXj-ym6CPud4F0XCZBnRZg/exec";
+    
+    let currentOrder = null;
+    let base64Image = "";
+    let stream = null;
 
-                <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                        Access Approved • Pending Receive
-                    </span>
-                </div>
-            </div>
+    // 1. Search Order
+    function searchOrder() {
+      const query = document.getElementById('searchQuery').value.trim();
+      const status = document.getElementById('searchStatus');
+      const searchBtn = document.getElementById('searchBtn');
 
-            <!-- Card Content Body -->
-            <div class="p-6 space-y-6">
-                
-                <!-- Student & Order Info Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                    
-                    <!-- Student Column -->
-                    <div class="space-y-3">
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="fa-solid fa-user-graduate text-brand-orange"></i>
-                            Student Information
-                        </h4>
-                        <div>
-                            <p class="text-xs text-slate-500">Student Name</p>
-                            <p id="dispName" class="text-sm font-bold text-brand-black">---</p>
-                        </div>
-                        <div class="flex items-center gap-6">
-                            <div>
-                                <p class="text-xs text-slate-500">Reg Number</p>
-                                <p id="dispRegNo" class="text-xs font-semibold text-slate-800 font-mono bg-white px-2 py-0.5 rounded border border-slate-200 inline-block mt-0.5">---</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-slate-500">Group / Batch</p>
-                                <p id="dispGroup" class="text-xs font-semibold text-slate-800 font-mono bg-white px-2 py-0.5 rounded border border-slate-200 inline-block mt-0.5">---</p>
-                            </div>
-                        </div>
-                    </div>
+      if (!query) return;
 
-                    <!-- Item Column -->
-                    <div class="space-y-3 border-t md:border-t-0 md:border-l border-slate-200 pt-3 md:pt-0 md:pl-4">
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="fa-solid fa-flask text-brand-orange"></i>
-                            Chemical / Requisition Item
-                        </h4>
-                        <div>
-                            <p class="text-xs text-slate-500">Item Description</p>
-                            <p id="dispItem" class="text-base font-extrabold text-brand-orange">---</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-500">Approved Quantity</p>
-                            <p id="dispQuantity" class="text-sm font-bold text-slate-800">---</p>
-                        </div>
-                    </div>
+      searchBtn.disabled = true;
+      status.classList.remove('hidden');
+      status.className = "text-center text-sm font-medium mt-2 text-orange-500";
+      status.innerText = "Searching order...";
 
-                </div>
-
-                <!-- PROOF OF RECEIPT PHOTO SECTION -->
-                <div class="space-y-4 border-t border-slate-100 pt-5">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="text-sm font-bold text-brand-black flex items-center gap-2">
-                                <i class="fa-solid fa-camera text-brand-orange"></i>
-                                Capture Proof Image <span class="text-xs text-red-500 font-semibold">*Required</span>
-                            </h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Take a quick picture of the handed chemical / container as delivery proof.</p>
-                        </div>
-                    </div>
-
-                    <!-- Upload / Camera Area -->
-                    <div id="uploadDropZone" class="border-2 border-dashed border-slate-300 hover:border-brand-orange rounded-xl p-6 text-center bg-slate-50/50 hover:bg-orange-50/30 transition-all cursor-pointer relative group">
-                        
-                        <!-- Hidden File Input with Camera Support -->
-                        <input 
-                            type="file" 
-                            id="photoInput" 
-                            accept="image/*" 
-                            capture="environment" 
-                            onchange="handlePhotoSelect(event)" 
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                        >
-
-                        <!-- Empty State UI -->
-                        <div id="dropZonePrompt" class="space-y-2">
-                            <div class="w-12 h-12 rounded-full bg-white shadow-sm border border-slate-200 mx-auto flex items-center justify-center text-brand-orange group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-camera-retro text-xl"></i>
-                            </div>
-                            <p class="text-xs font-bold text-slate-700">Tap to Take Photo or Choose File</p>
-                            <p class="text-[11px] text-slate-400">Supports Mobile Camera direct capture (JPG, PNG)</p>
-                        </div>
-
-                        <!-- Image Preview Container -->
-                        <div id="previewContainer" class="hidden relative inline-block max-w-xs mx-auto">
-                            <img id="imagePreview" src="" alt="Proof Preview" class="max-h-56 rounded-lg shadow-md border-2 border-brand-orange object-cover">
-                            
-                            <!-- Remove Image Overlay Button -->
-                            <button 
-                                type="button" 
-                                onclick="removePhoto(event)" 
-                                class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full shadow-lg flex items-center justify-center text-xs z-20 transition-transform hover:scale-110"
-                                title="Remove photo"
-                            >
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                            
-                            <div class="mt-2 text-[11px] font-semibold text-emerald-600 flex items-center justify-center gap-1">
-                                <i class="fa-solid fa-circle-check"></i> Photo Ready for Submission
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- CONFIRM RECEIVE ACTION BUTTON -->
-                <button 
-                    id="confirmBtn" 
-                    onclick="submitOrderConfirmation()" 
-                    disabled
-                    class="w-full bg-slate-300 text-slate-500 font-bold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 cursor-not-allowed shadow-none"
-                >
-                    <i class="fa-solid fa-check-double text-base"></i>
-                    <span id="confirmBtnText">Confirm Order Receive & Upload Proof</span>
-                </button>
-
-            </div>
-
-        </section>
-
-        <!-- PROGRESS MODAL / OVERLAY (For Real-time Upload Feedback) -->
-        <div id="progressModal" class="hidden fixed inset-0 bg-brand-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full text-center space-y-5 shadow-2xl border border-slate-100">
-                
-                <div class="relative w-16 h-16 mx-auto">
-                    <div class="w-16 h-16 rounded-full border-4 border-orange-100 border-t-brand-orange animate-spin"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-brand-orange">
-                        <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-base font-bold text-brand-black" id="progressModalTitle">Processing Order</h3>
-                    <p class="text-xs text-slate-500 mt-1" id="progressModalDesc">Please keep this window open...</p>
-                </div>
-
-                <!-- Progress Steps Indicator -->
-                <div class="space-y-2 text-left bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-medium">
-                    <div id="step1" class="flex items-center gap-2 text-slate-400">
-                        <i class="fa-solid fa-circle-notch fa-spin"></i>
-                        <span>Compressing Image...</span>
-                    </div>
-                    <div id="step2" class="flex items-center gap-2 text-slate-400">
-                        <i class="fa-regular fa-circle"></i>
-                        <span>Uploading to Google Drive...</span>
-                    </div>
-                    <div id="step3" class="flex items-center gap-2 text-slate-400">
-                        <i class="fa-regular fa-circle"></i>
-                        <span>Updating 'Order Entry' & 'Requests'...</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- SUCCESS RECEIPT CARD (Shown after successful submission) -->
-        <section id="successCard" class="hidden bg-white rounded-2xl shadow-xl border border-emerald-200 overflow-hidden text-center p-6 sm:p-8 space-y-6">
-            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center text-2xl shadow-inner">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-
-            <div>
-                <h2 class="text-xl font-extrabold text-slate-900">Requisition Confirmed!</h2>
-                <p class="text-xs text-slate-500 mt-1">Order status updated to <span class="font-bold text-emerald-600">Received</span> in Google Sheet.</p>
-            </div>
-
-            <!-- Receipt Breakdown -->
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left text-xs space-y-2 font-mono">
-                <div class="flex justify-between border-b pb-1.5">
-                    <span class="text-slate-500">Order ID:</span>
-                    <span id="succOrderId" class="font-bold text-slate-800">---</span>
-                </div>
-                <div class="flex justify-between border-b pb-1.5">
-                    <span class="text-slate-500">Student Reg:</span>
-                    <span id="succRegNo" class="font-bold text-slate-800">---</span>
-                </div>
-                <div class="flex justify-between border-b pb-1.5">
-                    <span class="text-slate-500">Item:</span>
-                    <span id="succItem" class="font-bold text-brand-orange">---</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-500">Timestamp:</span>
-                    <span id="succTime" class="text-slate-700">---</span>
-                </div>
-            </div>
-
-            <!-- Action buttons -->
-            <div class="flex flex-col sm:flex-row gap-3">
-                <a 
-                    id="succDriveLink" 
-                    href="#" 
-                    target="_blank" 
-                    class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
-                >
-                    <i class="fa-brands fa-google-drive"></i>
-                    View Uploaded Photo
-                </a>
-                <button 
-                    onclick="resetApp()" 
-                    class="flex-1 bg-brand-orange hover:bg-brand-orangeHover text-white font-semibold text-xs py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md"
-                >
-                    <i class="fa-solid fa-rotate-right"></i>
-                    Receive Another Order
-                </button>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-slate-200 py-4 mt-auto text-center text-xs text-slate-400">
-        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p>© 2026 Lab Requisition Portal • LPU Chemistry & Chemical Engineering</p>
-            <p class="text-[11px]">Powered by Google Apps Script & Drive Integration</p>
-        </div>
-    </footer>
-
-    <!-- APPLICATION JAVASCRIPT CODE -->
-    <script>
-        // Google Apps Script Web App Executable URL
-        const API_URL = "https://script.google.com/macros/s/AKfycbybKG4dJr1ihd7DjtK2EyPzQw5ZsD17t32Kl06FGqqzw8K5DeLX62qkkZE01LVcJNiJDA/exec";
-
-        // Global State Variables
-        let currentOrder = null;
-        let base64PhotoData = "";
-        let foundOrdersList = [];
-
-        // Application Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            checkUrlParameters();
+      fetch(`${API_URL}?action=searchOrder&query=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+          searchBtn.disabled = false;
+          if (data.result === "success" && data.orders.length > 0) {
+            status.classList.add('hidden');
+            currentOrder = data.orders[0]; 
+            showOrderDetails(currentOrder);
+          } else {
+            status.className = "text-center text-sm font-medium mt-2 text-red-600";
+            status.innerText = "No active order found or Access not granted!";
+            document.getElementById('orderDetailsSection').classList.add('hidden');
+          }
+        })
+        .catch(err => {
+          searchBtn.disabled = false;
+          status.className = "text-center text-sm font-medium mt-2 text-red-600";
+          status.innerText = "Error searching order.";
         });
+    }
 
-        // 1. URL Parameter Checker for Auto-Search (e.g. ?orderId=123 or ?regNo=16239868)
-        function checkUrlParameters() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('orderId') || urlParams.get('regNo') || urlParams.get('query') || urlParams.get('q');
-            
-            if (query && query.trim() !== '') {
-                const searchInput = document.getElementById('searchInput');
-                searchInput.value = query.trim();
-                
-                const notice = document.getElementById('urlQueryNotice');
-                notice.classList.remove('hidden');
-                
-                // Execute auto search
-                executeOrderSearch(query.trim());
-            }
+    // 2. Display Order Details
+    function showOrderDetails(order) {
+      document.getElementById('dispOrderId').innerText = order.orderId;
+      document.getElementById('dispRegNo').innerText = order.regNo;
+      document.getElementById('dispName').innerText = order.name;
+      document.getElementById('dispGroup').innerText = order.group;
+      document.getElementById('dispItem').innerText = order.item;
+      document.getElementById('dispQuantity').innerText = order.quantity;
+      document.getElementById('dispUnit').innerText = order.unit || "N/A";
+      
+      // Reset camera view
+      base64Image = "";
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+      document.getElementById('confirmBtn').classList.add('hidden');
+      document.getElementById('startCamBtn').innerText = "📷 Open Live Camera";
+      document.getElementById('startCamBtn').classList.remove('hidden');
+      document.getElementById('captureBtn').classList.add('hidden');
+      
+      document.getElementById('orderDetailsSection').classList.remove('hidden');
+    }
+
+    // 3. Start Live Camera Stream (WebRTC)
+    async function startCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: { exact: "environment" } } 
+        });
+      } catch (err) {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+        } catch (fallbackErr) {
+          stream = await navigator.mediaDevices.getUserMedia({ video: true });
         }
+      }
 
-        function dismissUrlNotice() {
-            document.getElementById('urlQueryNotice').classList.add('hidden');
+      const video = document.getElementById('webcam');
+      video.srcObject = stream;
+      video.classList.remove('hidden');
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+      
+      document.getElementById('startCamBtn').classList.add('hidden');
+      document.getElementById('captureBtn').classList.remove('hidden');
+    }
+
+    // 4. Take Live Snapshot & Add Watermark
+    function takeSnapshot() {
+      const video = document.getElementById('webcam');
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d');
+
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
+
+      // Frame draw on canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Watermark Text Overlay
+      const now = new Date();
+      const timeString = "Verified: " + now.toLocaleString();
+      
+      context.font = "bold 16px sans-serif";
+      context.fillStyle = "rgba(0, 0, 0, 0.6)";
+      context.fillRect(10, canvas.height - 35, context.measureText(timeString).width + 20, 25);
+      
+      context.fillStyle = "#ffffff";
+      context.fillText(timeString, 20, canvas.height - 18);
+
+      // Base64 conversion
+      base64Image = canvas.toDataURL('image/jpeg', 0.85);
+
+      // Preview Display
+      document.getElementById('imagePreview').src = base64Image;
+      document.getElementById('imagePreviewContainer').classList.remove('hidden');
+
+      // Stop camera stream
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      video.classList.add('hidden');
+      document.getElementById('captureBtn').classList.add('hidden');
+      document.getElementById('startCamBtn').innerText = "🔄 Retake Photo";
+      document.getElementById('startCamBtn').classList.remove('hidden');
+      document.getElementById('confirmBtn').classList.remove('hidden');
+    }
+
+    // 5. Gather Device Metadata & Browser Fingerprint
+    async function getDeviceMetadata() {
+      const userAgent = navigator.userAgent;
+      const screenRes = `${window.screen.width}x${window.screen.height}`;
+      const language = navigator.language;
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      const rawFingerprint = `${userAgent}|${screenRes}|${language}|${timeZone}|${navigator.hardwareConcurrency || ''}`;
+      
+      const msgBuffer = new TextEncoder().encode(rawFingerprint);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const fingerprintHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      return {
+        deviceInfo: userAgent,
+        screenSize: screenRes,
+        fingerprint: fingerprintHash
+      };
+    }
+
+    // 6. Submit Confirmation with Security Payload
+    async function submitConfirmation() {
+      if (!base64Image) {
+        alert("Please capture a live photo first!");
+        return;
+      }
+
+      const confirmBtn = document.getElementById('confirmBtn');
+      const status = document.getElementById('uploadStatus');
+
+      confirmBtn.disabled = true;
+      confirmBtn.innerText = "Processing...";
+      status.classList.remove('hidden');
+      status.className = "text-center text-sm font-medium mt-2 text-orange-500";
+      status.innerText = "Processing & verifying image...";
+
+      const metadata = await getDeviceMetadata();
+
+      const payload = {
+        rowIndex: currentOrder.rowIndex,
+        orderId: currentOrder.orderId,
+        regNo: currentOrder.regNo,
+        name: currentOrder.name,
+        group: currentOrder.group,
+        item: currentOrder.item,
+        quantity: currentOrder.quantity,
+        unit: currentOrder.unit,
+        imageBase64: base64Image,
+        deviceModel: metadata.deviceInfo,
+        screenSize: metadata.screenSize,
+        fingerprint: metadata.fingerprint
+      };
+
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.result === "success") {
+          status.className = "text-center text-sm font-medium mt-2 text-green-600";
+          status.innerText = "Order confirmed successfully!";
+          setTimeout(() => { location.reload(); }, 2000);
+        } else {
+          status.className = "text-center text-sm font-medium mt-2 text-red-600";
+          status.innerText = "Failed: " + (data.error || "Please try again.");
+          confirmBtn.disabled = false;
+          confirmBtn.innerText = "Confirm Receive";
         }
+      })
+      .catch(err => {
+        status.className = "text-center text-sm font-medium mt-2 text-red-600";
+        status.innerText = "Submission completed.";
+        confirmBtn.disabled = false;
+        confirmBtn.innerText = "Confirm Receive";
+      });
+    }
+  </script>
 
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('clearSearchBtn').classList.add('hidden');
-            hideAlert();
-            hideOrderCard();
-            document.getElementById('multiOrderSection').classList.add('hidden');
-        }
-
-        // Handle Search Form Submit
-        function handleSearch(event) {
-            event.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
-            executeOrderSearch(query);
-        }
-
-        // 2. Query Google Apps Script Backend
-        function executeOrderSearch(query) {
-            hideAlert();
-            hideOrderCard();
-            document.getElementById('multiOrderSection').classList.add('hidden');
-            document.getElementById('clearSearchBtn').classList.remove('hidden');
-
-            showSearchLoading(true);
-
-            const searchUrl = `${API_URL}?action=searchOrder&query=${encodeURIComponent(query)}`;
-
-            fetch(searchUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Network HTTP error: " + response.status);
-                    return response.json();
-                })
-                .then(data => {
-                    showSearchLoading(false);
-
-                    if (data.result === "success" && data.orders && data.orders.length > 0) {
-                        foundOrdersList = data.orders;
-                        
-                        if (foundOrdersList.length === 1) {
-                            // Single match
-                            selectActiveOrder(foundOrdersList[0]);
-                        } else {
-                            // Multiple active requisitions found for this Reg No
-                            renderMultiOrderList(foundOrdersList);
-                        }
-                    } else {
-                        showAlert(
-                            "No Approved Order Found", 
-                            `No active order matching '${query}' was found, or Access permission hasn't been granted by the teacher in 'Order Entry' sheet (Checkbox Col E).`, 
-                            "warning"
-                        );
-                    }
-                })
-                .catch(error => {
-                    console.error("Search Error:", error);
-                    showSearchLoading(false);
-                    showAlert(
-                        "Database Connection Error", 
-                        "Failed to communicate with Google Sheets server. Please check your internet connection or URL deployment.", 
-                        "error"
-                    );
-                });
-        }
-
-        function showSearchLoading(isLoading) {
-            const btnText = document.getElementById('searchBtnText');
-            const btnIcon = document.getElementById('searchBtnIcon');
-            const spinner = document.getElementById('searchSpinner');
-            const btn = document.getElementById('searchBtn');
-            const skeleton = document.getElementById('loadingState');
-
-            if (isLoading) {
-                btn.disabled = true;
-                btnText.innerText = "Searching";
-                btnIcon.classList.add('hidden');
-                spinner.classList.remove('hidden');
-                skeleton.classList.remove('hidden');
-            } else {
-                btn.disabled = false;
-                btnText.innerText = "Search";
-                btnIcon.classList.remove('hidden');
-                spinner.classList.add('hidden');
-                skeleton.classList.add('hidden');
-            }
-        }
-
-        // 3. Render Multiple Order Cards if student requested multiple items
-        function renderMultiOrderList(orders) {
-            const container = document.getElementById('multiOrderContainer');
-            const section = document.getElementById('multiOrderSection');
-            const badge = document.getElementById('orderCountBadge');
-
-            badge.innerText = `${orders.length} Active Orders`;
-            container.innerHTML = '';
-
-            orders.forEach((ord, index) => {
-                const card = document.createElement('div');
-                card.className = "p-4 border rounded-xl hover:border-brand-orange bg-slate-50 hover:bg-orange-50/40 transition-all cursor-pointer flex flex-wrap items-center justify-between gap-3";
-                card.onclick = () => {
-                    section.classList.add('hidden');
-                    selectActiveOrder(ord);
-                };
-
-                card.innerHTML = `
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-xs bg-slate-200 text-slate-800 px-2 py-0.5 rounded">${ord.orderId || 'ORD-' + index}</span>
-                            <span class="font-bold text-sm text-brand-orange">${ord.item}</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Student: <strong>${ord.name}</strong> (${ord.regNo}) • Group: ${ord.group}</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-semibold text-slate-700">Qty: ${ord.quantity}</span>
-                        <span class="bg-brand-orange text-white text-xs px-3 py-1.5 rounded-lg font-bold">Select <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
-            section.classList.remove('hidden');
-        }
-
-        // 4. Select and Display Active Order
-        function selectActiveOrder(order) {
-            currentOrder = order;
-
-            document.getElementById('dispOrderId').innerText = order.orderId || 'ORD-REQUEST';
-            document.getElementById('dispRegNo').innerText = order.regNo || 'N/A';
-            document.getElementById('dispName').innerText = order.name || 'Student';
-            document.getElementById('dispGroup').innerText = order.group || 'N/A';
-            document.getElementById('dispItem').innerText = order.item || 'Chemical';
-            document.getElementById('dispQuantity').innerText = order.quantity || '1';
-
-            // Reset image proof area
-            removePhoto();
-
-            document.getElementById('activeOrderCard').classList.remove('hidden');
-            document.getElementById('activeOrderCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function hideOrderCard() {
-            document.getElementById('activeOrderCard').classList.add('hidden');
-            currentOrder = null;
-        }
-
-        // 5. Handle Photo Capture & Client Compression
-        function handlePhotoSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                showAlert("Invalid File", "Please upload a valid image file (JPG, PNG).", "error");
-                return;
-            }
-
-            // Compress image using Canvas
-            compressAndConvertImage(file);
-        }
-
-        function compressAndConvertImage(file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function (e) {
-                const img = new Image();
-                img.src = e.target.result;
-
-                img.onload = function () {
-                    // Resize image if larger than 1200px width/height to ensure ultra-fast upload
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-
-                    let width = img.width;
-                    let height = img.height;
-                    const maxDim = 1200;
-
-                    if (width > maxDim || height > maxDim) {
-                        if (width > height) {
-                            height = Math.round((height * maxDim) / width);
-                            width = maxDim;
-                        } else {
-                            width = Math.round((width * maxDim) / height);
-                            height = maxDim;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    // Convert to Base64 JPEG with 0.82 quality compression
-                    base64PhotoData = canvas.toDataURL('image/jpeg', 0.82);
-
-                    // Display Preview
-                    document.getElementById('imagePreview').src = base64PhotoData;
-                    document.getElementById('dropZonePrompt').classList.add('hidden');
-                    document.getElementById('previewContainer').classList.remove('hidden');
-
-                    // Enable Submit Button
-                    enableConfirmButton(true);
-                };
-            };
-        }
-
-        function removePhoto(event) {
-            if (event) event.stopPropagation();
-            
-            base64PhotoData = "";
-            document.getElementById('photoInput').value = "";
-            document.getElementById('imagePreview').src = "";
-            document.getElementById('previewContainer').classList.add('hidden');
-            document.getElementById('dropZonePrompt').classList.remove('hidden');
-
-            enableConfirmButton(false);
-        }
-
-        function enableConfirmButton(enable) {
-            const btn = document.getElementById('confirmBtn');
-            if (enable) {
-                btn.disabled = false;
-                btn.className = "w-full bg-brand-orange hover:bg-brand-orangeHover text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-orange-500/20 active:scale-[0.99] cursor-pointer";
-            } else {
-                btn.disabled = true;
-                btn.className = "w-full bg-slate-200 text-slate-400 font-bold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 cursor-not-allowed shadow-none";
-            }
-        }
-
-        // 6. Submit Order Confirmation Payload to Google Apps Script
-        function submitOrderConfirmation() {
-            if (!currentOrder || !base64PhotoData) {
-                showAlert("Missing Proof", "Please capture or upload a proof photo before confirming receive.", "warning");
-                return;
-            }
-
-            // Show Progress Modal
-            showProgressModal(true);
-            updateProgressStep(1);
-
-            const payload = {
-                rowIndex: currentOrder.rowIndex,
-                orderId: currentOrder.orderId,
-                regNo: currentOrder.regNo,
-                name: currentOrder.name,
-                group: currentOrder.group,
-                item: currentOrder.item,
-                quantity: currentOrder.quantity,
-                imageBase64: base64PhotoData
-            };
-
-            setTimeout(() => {
-                updateProgressStep(2);
-            }, 600);
-
-            // Send POST request
-            fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Ensures Google Apps Script CORS compatibility
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(data => {
-                updateProgressStep(3);
-
-                setTimeout(() => {
-                    showProgressModal(false);
-
-                    if (data.result === "success") {
-                        showSuccessReceipt(currentOrder, data.photoUrl);
-                    } else {
-                        showAlert("Submission Failed", data.message || "Failed to record entry. Please try again.", "error");
-                    }
-                }, 500);
-            })
-            .catch(err => {
-                console.error("Submit Error:", err);
-                showProgressModal(false);
-                showAlert("Network Error", "Could not complete request. Please verify internet connectivity and retry.", "error");
-            });
-        }
-
-        function showProgressModal(show) {
-            const modal = document.getElementById('progressModal');
-            if (show) modal.classList.remove('hidden');
-            else modal.classList.add('hidden');
-        }
-
-        function updateProgressStep(stepNum) {
-            const step1 = document.getElementById('step1');
-            const step2 = document.getElementById('step2');
-            const step3 = document.getElementById('step3');
-
-            if (stepNum >= 1) {
-                step1.className = "flex items-center gap-2 text-brand-orange font-bold";
-                step1.querySelector('i').className = "fa-solid fa-circle-check text-emerald-500";
-            }
-            if (stepNum >= 2) {
-                step2.className = "flex items-center gap-2 text-brand-orange font-bold";
-                step2.querySelector('i').className = "fa-solid fa-circle-notch fa-spin text-brand-orange";
-            }
-            if (stepNum >= 3) {
-                step2.querySelector('i').className = "fa-solid fa-circle-check text-emerald-500";
-                step3.className = "flex items-center gap-2 text-emerald-600 font-bold";
-                step3.querySelector('i').className = "fa-solid fa-circle-check text-emerald-500";
-            }
-        }
-
-        // 7. Show Success Receipt Card
-        function showSuccessReceipt(order, photoUrl) {
-            hideOrderCard();
-
-            document.getElementById('succOrderId').innerText = order.orderId;
-            document.getElementById('succRegNo').innerText = order.regNo;
-            document.getElementById('succItem').innerText = order.item;
-            document.getElementById('succTime').innerText = new Date().toLocaleString('en-IN', {
-                dateStyle: 'medium',
-                timeStyle: 'short'
-            });
-
-            const driveBtn = document.getElementById('succDriveLink');
-            if (photoUrl) {
-                driveBtn.href = photoUrl;
-                driveBtn.classList.remove('hidden');
-            } else {
-                driveBtn.classList.add('hidden');
-            }
-
-            const successCard = document.getElementById('successCard');
-            successCard.classList.remove('hidden');
-            successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function resetApp() {
-            document.getElementById('successCard').classList.add('hidden');
-            clearSearch();
-        }
-
-        // 8. Custom Toast / Alert Notification System
-        function showAlert(title, message, type = "info") {
-            const alertBox = document.getElementById('alertBox');
-            const alertTitle = document.getElementById('alertTitle');
-            const alertMessage = document.getElementById('alertMessage');
-            const alertIcon = document.getElementById('alertIcon');
-
-            alertTitle.innerText = title;
-            alertMessage.innerText = message;
-
-            if (type === "error") {
-                alertBox.className = "p-4 rounded-2xl border text-sm flex items-start gap-3 bg-red-50 border-red-200 text-red-800 shadow-sm transition-all";
-                alertIcon.className = "fa-solid fa-circle-xmark text-lg mt-0.5 text-red-600";
-            } else if (type === "warning") {
-                alertBox.className = "p-4 rounded-2xl border text-sm flex items-start gap-3 bg-amber-50 border-amber-200 text-amber-900 shadow-sm transition-all";
-                alertIcon.className = "fa-solid fa-triangle-exclamation text-lg mt-0.5 text-amber-600";
-            } else {
-                alertBox.className = "p-4 rounded-2xl border text-sm flex items-start gap-3 bg-blue-50 border-blue-200 text-blue-900 shadow-sm transition-all";
-                alertIcon.className = "fa-solid fa-circle-info text-lg mt-0.5 text-blue-600";
-            }
-
-            alertBox.classList.remove('hidden');
-            alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        function hideAlert() {
-            document.getElementById('alertBox').classList.add('hidden');
-        }
-
-        // Copy Order ID Utility
-        function copyOrderId() {
-            if (!currentOrder || !currentOrder.orderId) return;
-            
-            const tempInput = document.createElement('input');
-            tempInput.value = currentOrder.orderId;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            // Temporary status feedback
-            const el = document.getElementById('dispOrderId');
-            const oldText = el.innerText;
-            el.innerText = "Copied to Clipboard!";
-            setTimeout(() => {
-                el.innerText = oldText;
-            }, 1500);
-        }
-    </script>
 </body>
 </html>
